@@ -29,6 +29,14 @@ public class Red7 extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    
+    //returns an all-false boolean array of length 7
+    private boolean[] createDealtInColorArray() {
+        return new boolean[7];
+    }
+    
+    
 
     /**
      * Start the game.
@@ -37,12 +45,10 @@ public class Red7 extends Application {
     
         primaryStage.setTitle("Red 7");
         
-        boolean[] dealtViolets = new boolean[7];
-        for (int i = 0; i < 7; i++) {
-            dealtViolets[i] = false;
-        }
+        //boolean[] violetsDealt = this.createDealtInColorArray();
+        boolean[] violetsDealt = this.createDealtInColorArray();
+        boolean[] indigosDealt = this.createDealtInColorArray();
         
-        boolean[] indigosDealt = new boolean[] {false, false, false, false, false, false, false};
         
         int[] playerAHandNums = new int[2];
         int[] BHandNums = new int[2];
@@ -69,13 +75,13 @@ public class Red7 extends Application {
                 color = "Violet";
             }
             if (color.equals("Violet")) {
-                x = !dealtViolets[number - 1];
+                x = !violetsDealt[number - 1];
             } else {
                 x = !indigosDealt[number - 1];
             }
         }
         if (color.equals("Violet")) {
-            dealtViolets[number - 1] = true;
+            violetsDealt[number - 1] = true;
         } else {
             indigosDealt[number - 1] = true;
         }
@@ -91,13 +97,13 @@ public class Red7 extends Application {
                 color = "Violet";
             }
             if (color.equals("Violet")) {
-                x = !dealtViolets[number - 1];
+                x = !violetsDealt[number - 1];
             } else {
                 x = !indigosDealt[number - 1];
             }
         }
         if (color.equals("Violet")) {
-            dealtViolets[number - 1] = true;
+            violetsDealt[number - 1] = true;
         } else {
             indigosDealt[number - 1] = true;
         }
@@ -113,13 +119,13 @@ public class Red7 extends Application {
                 color = "Violet";
             }
             if (color.equals("Violet")) {
-                x = !dealtViolets[number - 1];
+                x = !violetsDealt[number - 1];
             } else {
                 x = !indigosDealt[number - 1];
             }
         }
         if (color.equals("Violet")) {
-            dealtViolets[number - 1] = true;
+            violetsDealt[number - 1] = true;
         } else {
             indigosDealt[number - 1] = true;
         }
@@ -135,13 +141,13 @@ public class Red7 extends Application {
                 color = "Violet";
             }
             if (color.equals("Violet")) {
-                x = !dealtViolets[number - 1];
+                x = !violetsDealt[number - 1];
             } else {
                 x = !indigosDealt[number - 1];
             }
         }
         if (color.equals("Violet")) {
-            dealtViolets[number - 1] = true;
+            violetsDealt[number - 1] = true;
         } else {
             indigosDealt[number - 1] = true;
         }
@@ -157,13 +163,13 @@ public class Red7 extends Application {
                 color = "Violet";
             }
             if (color.equals("Violet")) {
-                x = !dealtViolets[number - 1];
+                x = !violetsDealt[number - 1];
             } else {
                 x = !indigosDealt[number - 1];
             }
         }
         if (color.equals("Violet")) {
-            dealtViolets[number - 1] = true;
+            violetsDealt[number - 1] = true;
         } else {
             indigosDealt[number - 1] = true;
         }
@@ -179,21 +185,25 @@ public class Red7 extends Application {
                 color = "Violet";
             }
             if (color.equals("Violet")) {
-                x = !dealtViolets[number - 1];
+                x = !violetsDealt[number - 1];
             } else {
                 x = !indigosDealt[number - 1];
             }
         }
         if (color.equals("Violet")) {
-            dealtViolets[number - 1] = true;
+            violetsDealt[number - 1] = true;
         } else {
             indigosDealt[number - 1] = true;
         }
         BHandNums[1] = number;
         playerBHandColors[1] = color;
         
+        
+        //Creates overall GUI
         VBox board = new VBox();
         board.setSpacing(2);
+        
+        //Creates GUI for player A's hand
         Text handText = new Text("Player A's Hand");
         board.getChildren().add(handText);
         Pane aHandCards = new HBox();
@@ -225,6 +235,8 @@ public class Red7 extends Application {
         
         board.getChildren().add(new Separator());
         
+        
+        //Creating GUI for Player A's Palette
         board.getChildren().add(new Text("Player A's Palette"));
         StackPane aPalette = new StackPane();
         Rectangle aPaletteR = new Rectangle(125, 175, Color.VIOLET);
