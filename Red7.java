@@ -45,16 +45,17 @@ public class Red7 extends Application {
     
         primaryStage.setTitle("Red 7");
         
-        //boolean[] violetsDealt = this.createDealtInColorArray();
+        //arrays to keep track of which cards have been dealt
         boolean[] violetsDealt = this.createDealtInColorArray();
         boolean[] indigosDealt = this.createDealtInColorArray();
         
-        
+        //numbers in players' hands and palettes
         int[] playerAHandNums = new int[2];
         int[] BHandNums = new int[2];
         int[] APaletteNums = new int[1];
         int[] playerBPaletteNumbers = new int[1];
         
+        //colors in players' hands and palettes
         String[] AHandColors = new String[2];
         String[] playerBHandColors = new String[2];
         String[] BPaletteColors = new String[1];
@@ -64,6 +65,7 @@ public class Red7 extends Application {
         
         Random randGen = new Random();
         
+        //pick player A's starting palette card
         boolean x = false;
         int number = -5;
         String color = "Nothing";
@@ -88,6 +90,7 @@ public class Red7 extends Application {
         APaletteNums[0] = number;
         playerAPaletteColors[0] = color;
         
+        //player B's starting palette card
         x=false;
         while (!x) {
             number = randGen.nextInt(7) + 1;
@@ -110,6 +113,7 @@ public class Red7 extends Application {
         playerBPaletteNumbers[0] = number;
         BPaletteColors[0] = color;
         
+        //get the zeroeth card in player A's hand
         x=false;
         while (!x) {
             number = randGen.nextInt(7) + 1;
@@ -132,6 +136,7 @@ public class Red7 extends Application {
         playerAHandNums[0] = number;
         AHandColors[0] = color;
         
+        //get the oneth card in player A's hand
         x=false;
         while (!x) {
             number = randGen.nextInt(7) + 1;
