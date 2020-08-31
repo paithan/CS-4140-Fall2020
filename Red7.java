@@ -198,8 +198,12 @@ public class Red7 extends Application {
         BHandNums[1] = number;
         playerBHandColors[1] = color;
         
+        
+        //Creates overall GUI
         VBox board = new VBox();
         board.setSpacing(2);
+        
+        //Creates GUI for player A's hand
         Text handText = new Text("Player A's Hand");
         board.getChildren().add(handText);
         Pane aHandCards = new HBox();
@@ -231,6 +235,8 @@ public class Red7 extends Application {
         
         board.getChildren().add(new Separator());
         
+        
+        //Creating GUI for Player A's Palette
         board.getChildren().add(new Text("Player A's Palette"));
         StackPane aPalette = new StackPane();
         Rectangle aPaletteR = new Rectangle(125, 175, Color.VIOLET);
