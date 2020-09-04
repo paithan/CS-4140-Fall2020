@@ -37,8 +37,7 @@ public class Red7 extends Application {
     }
     
     
-    //deals a card
-    private
+    
     
 
     /**

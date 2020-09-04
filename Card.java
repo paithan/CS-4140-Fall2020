@@ -66,11 +66,7 @@ public class Card {
      * @return       Whether this equals the other card.
      */
     public boolean equals(Card other) {
-        
+        return this.color.equals(other.color) && (this.number == other.number);
     }
-    
-    
-
-
 
 } //end of Card class
