@@ -37,6 +37,9 @@ public class Red7 extends Application {
     }
     
     
+    //deals a card
+    private
+    
 
     /**
      * Start the game.
