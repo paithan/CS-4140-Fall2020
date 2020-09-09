@@ -23,6 +23,10 @@ import javafx.stage.Stage;
  */
 public class Red7 extends Application {
     
+    //starting hand size
+    private static final int STARTING_HAND_SIZE = 2;
+    
+    
     /**
      * Main method to run the game.
      */
@@ -47,9 +51,9 @@ public class Red7 extends Application {
     
         primaryStage.setTitle("Red 7");
         
-        //boolean[] violetsDealt = this.createDealtInColorArray();
-        boolean[] violetsDealt = this.createDealtInColorArray();
-        boolean[] indigosDealt = this.createDealtInColorArray();
+        Deck deck = new Deck();
+        
+        
         
         
         int[] playerAHandNums = new int[2];
@@ -66,139 +70,60 @@ public class Red7 extends Application {
         
         Random randGen = new Random();
         
-        boolean x = false;
-        int number = -5;
-        String color = "Nothing";
-        while (!x) {
-            number = randGen.nextInt(7) + 1;
-            int cardColor = randGen.nextInt(2) + 1;
-            color = "Indigo";
-            if (cardColor == 1) {
-                color = "Violet";
-            }
-            if (color.equals("Violet")) {
-                x = !violetsDealt[number - 1];
-            } else {
-                x = !indigosDealt[number - 1];
-            }
-        }
-        if (color.equals("Violet")) {
-            violetsDealt[number - 1] = true;
-        } else {
-            indigosDealt[number - 1] = true;
-        }
+        
+        
+        //deal the first card
+        Card nextCard = deck.dealCard();
+        String color = nextCard.getColor();
+        int number = nextCard.getNumber();
+        
+        
         APaletteNums[0] = number;
         playerAPaletteColors[0] = color;
         
-        x=false;
-        while (!x) {
-            number = randGen.nextInt(7) + 1;
-            int cardColor = randGen.nextInt(2) + 1;
-            color = "Indigo";
-            if (cardColor == 1) {
-                color = "Violet";
-            }
-            if (color.equals("Violet")) {
-                x = !violetsDealt[number - 1];
-            } else {
-                x = !indigosDealt[number - 1];
-            }
-        }
-        if (color.equals("Violet")) {
-            violetsDealt[number - 1] = true;
-        } else {
-            indigosDealt[number - 1] = true;
-        }
+        
+        //deal the second card
+        nextCard = deck.dealCard();
+        color = nextCard.getColor();
+        number = nextCard.getNumber();
+        
+        
+        
+        
         playerBPaletteNumbers[0] = number;
         BPaletteColors[0] = color;
         
-        x=false;
-        while (!x) {
-            number = randGen.nextInt(7) + 1;
-            int cardColor = randGen.nextInt(2) + 1;
-            color = "Indigo";
-            if (cardColor == 1) {
-                color = "Violet";
-            }
-            if (color.equals("Violet")) {
-                x = !violetsDealt[number - 1];
-            } else {
-                x = !indigosDealt[number - 1];
-            }
-        }
-        if (color.equals("Violet")) {
-            violetsDealt[number - 1] = true;
-        } else {
-            indigosDealt[number - 1] = true;
-        }
-        playerAHandNums[0] = number;
-        AHandColors[0] = color;
         
-        x=false;
-        while (!x) {
-            number = randGen.nextInt(7) + 1;
-            int cardColor = randGen.nextInt(2) + 1;
-            color = "Indigo";
-            if (cardColor == 1) {
-                color = "Violet";
-            }
-            if (color.equals("Violet")) {
-                x = !violetsDealt[number - 1];
-            } else {
-                x = !indigosDealt[number - 1];
-            }
+        //deal the cards to player A's hand
+        for (int i = 0; i < STARTING_HAND_SIZE; i ++) {
+            //get the next card
+            nextCard = deck.dealCard();
+            color = nextCard.getColor();
+            number = nextCard.getNumber();
+            
+            
+            //add to A's hand
+            playerAHandNums[i] = number;
+            AHandColors[i] = color;
+            
         }
-        if (color.equals("Violet")) {
-            violetsDealt[number - 1] = true;
-        } else {
-            indigosDealt[number - 1] = true;
-        }
-        playerAHandNums[1] = number;
-        AHandColors[1] = color;
         
-        x=false;
-        while (!x) {
-            number = randGen.nextInt(7) + 1;
-            int cardColor = randGen.nextInt(2) + 1;
-            color = "Indigo";
-            if (cardColor == 1) {
-                color = "Violet";
-            }
-            if (color.equals("Violet")) {
-                x = !violetsDealt[number - 1];
-            } else {
-                x = !indigosDealt[number - 1];
-            }
-        }
-        if (color.equals("Violet")) {
-            violetsDealt[number - 1] = true;
-        } else {
-            indigosDealt[number - 1] = true;
-        }
-        BHandNums[0] = number;
-        playerBHandColors[0] = color;
         
-        x=false;
-        while (!x) {
-            number = randGen.nextInt(7) + 1;
-            int cardColor = randGen.nextInt(2) + 1;
-            color = "Indigo";
-            if (cardColor == 1) {
-                color = "Violet";
-            }
-            if (color.equals("Violet")) {
-                x = !violetsDealt[number - 1];
-            } else {
-                x = !indigosDealt[number - 1];
-            }
+        //deal the cards to player B's hand
+        for (int i = 0; i < STARTING_HAND_SIZE; i ++) {
+            //get the next card
+            nextCard = deck.dealCard();
+            color = nextCard.getColor();
+            number = nextCard.getNumber();
+            
+            
+            //add to A's hand
+            BHandNums[i] = number;
+            playerBHandColors[i] = color;
+            
         }
-        if (color.equals("Violet")) {
-            violetsDealt[number - 1] = true;
-        } else {
-            indigosDealt[number - 1] = true;
-        }
-        BHandNums[1] = number;
-        playerBHandColors[1] = color;
+        
+        //now all the cards are dealt 
         
         
         //Creates overall GUI
