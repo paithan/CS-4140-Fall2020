@@ -3,12 +3,12 @@
  *
  * @author CS 4140 Class
  */
-public class Card {
+public class Card implements Comparable<Card> {
 
     //fields
     
     //the color of this card
-    private String color;
+    private CardColor color;
     
     //the number of this card
     private int number;
@@ -22,9 +22,20 @@ public class Card {
      * @param color  The color of the card.
      * @param number  The number of this card.
      */
-    public Card(String color, int number) {
+    public Card(CardColor color, int number) {
         this.color = color;
         this.number = number;
+    }
+    
+    
+    @Override
+    public int compareTo(Card other) {
+        int difference = other.getNumber() - this.getNumber();
+        if (difference != 0) {
+            return difference;
+        } else {
+            return other.getColor().getValue() - this.getColor().getValue();
+        }
     }
     
     
@@ -35,7 +46,7 @@ public class Card {
      *
      * @return The color of this card.
      */
-    public String getColor() {
+    public CardColor getColor() {
         return this.color;
     }
     
