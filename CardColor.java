@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Models a single color in Red7.
  *
@@ -27,10 +31,14 @@ public abstract class CardColor {
     
     
     //returns the numeric value of this color
-    private abstract int getValue();
+    protected abstract int getValue();
     
     
     public static class Red extends CardColor {
+    
+        public Red() {
+            //do nothing.
+        }
         
         @Override
         public int compareTo(CardColor other) {
@@ -39,17 +47,19 @@ public abstract class CardColor {
         }
         
         
-        private int getValue() {
+        protected int getValue() {
             return 7;
         }
         
-        public Collection<Card> getFittingCards(Collection<Card> cards) {
+        public Collection<Card> getFittingCards(Collection<Card> palette) {
             
-            for (Card card : cards) {
-                ///do some things in here
-            }
+            Card highest = Collections.max(palette);
             
+            Collection<Card> collection = new ArrayList<Card>();
             
+            collection.add(highest);
+            
+            return collection;
         }
     
     } //end of Red class

@@ -27,6 +27,21 @@ public class Card implements Comparable<Card> {
         this.number = number;
     }
     
+    /**
+     * constructor
+     *
+     * @param color  The color of the card as a String.
+     * @param number  The number of this card.
+     */
+    public Card(String color, int number) {
+        this.number = number;
+        if (color.equals("Red")) {
+            this.color = new CardColor.Red();
+        } else {
+            throw new RuntimeException("Illegal color for Card Constructor: " + color);
+        }
+    }
+    
     
     @Override
     public int compareTo(Card other) {
