@@ -42,7 +42,7 @@ public class Card implements Comparable<Card> {
         }
     }
     
-    
+    //implements a max comparator
     @Override
     public int compareTo(Card other) {
         int difference = other.getNumber() - this.getNumber();
