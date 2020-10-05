@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -70,6 +71,11 @@ public abstract class CardColor {
             return collection;
         }
     
+        @Override
+        public String toString() {
+            return "Red";
+        }
+    
     } //end of Red class
     
     /**
@@ -110,7 +116,7 @@ public abstract class CardColor {
             List<List<Card>> runs = new ArrayList<List<Card>>();
             List<Card> currentRun = new ArrayList<Card>();
             runs.add(currentRun);
-            int currentNumber = 8;
+            currentNumber = 8;
             for (Card card : highest) {
                 int newNumber = card.getNumber();
                 if (newNumber == currentNumber - 1) {
@@ -148,6 +154,11 @@ public abstract class CardColor {
             //return runs.get(0);
             
         }
+    
+        @Override
+        public String toString() {
+            return "Indigo";
+        }
         
         
     
@@ -170,6 +181,67 @@ public abstract class CardColor {
         } else {
             System.out.println("getValue works!");
         }
+        
+        CardColor indigo = new Indigo();
+        Collection<Card> cards = new ArrayList<Card>();
+        cards.add(new Card(red, 7));
+        cards.add(new Card(red, 1));
+        cards.add(new Card(indigo, 7));
+        
+        int testNumber = 0;
+        Collection<Card> fitting = indigo.getFittingCards(cards);
+        Card red7 = fitting.toArray(new Card[0])[0];
+        assert fitting.size() == 1 && red7.equals(new Card(red, 7)) : "fitting is " + fitting + ", but should be [Red7]!";
+        /*
+        if (fitting.size() == 1 && red7.equals(new Card(red, 7))) {
+            System.out.println("Test " + testNumber + " passes!");
+        } else {
+            System.out.println("Test " + testNumber + " fails!");
+            System.out.println("Result of test " + testNumber + ": " + fitting);
+            System.out.println("Should be:            [Red7]");
+        }
+        testNumber ++;*/
+        
+        cards.add(new Card(red, 7));
+        fitting = indigo.getFittingCards(cards);
+        red7 = fitting.toArray(new Card[0])[0];
+        assert fitting.size() == 1 && red7.equals(new Card(red, 7)) : "fitting is " + fitting + ", but should be [Red7]!";
+        /*
+        if (fitting.size() == 1 && red7.equals(new Card(red, 7))) {
+            System.out.println("Test " + testNumber + " passes!");
+        } else {
+            System.out.println("Test " + testNumber + " fails!");
+            System.out.println("Result of test " + testNumber + ": " + fitting);
+            System.out.println("Should be:            [Red7]");
+        }
+        testNumber ++;
+        */
+        
+        fitting = indigo.getFittingCards(new ArrayList<Card>());
+        assert fitting.size() == 0: "fitting is " + fitting + ", but should be []!";
+        /*
+        if (fitting.size() == 0) {
+            System.out.println("Test " + testNumber + " passes!");
+        } else {
+            System.out.println("Test " + testNumber + " fails!");
+            System.out.println("Result of test " + testNumber + ": " + fitting);
+            System.out.println("Should be:            []");
+        }
+        testNumber ++;
+        */
+        
+        cards = new ArrayList<Card>();
+        cards.add(new Card(red, 2));
+        cards.add(new Card(indigo, 3));
+        cards.add(new Card(red, 5));
+        fitting = indigo.getFittingCards(cards);
+        assert fitting.size() == 2 && fitting.contains(new Card(red, 2)) && fitting.contains(new Card(indigo, 3)) : "fitting is " + fitting + "!";
+        System.out.println(fitting);
+        
+        
+        
+        System.out.println("All tests worked!");
+        //assert fitting.size() == 2 && red7.equals(new Card(red, 7)) : "Breaking on purpose!";
     }
     
 

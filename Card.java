@@ -94,5 +94,10 @@ public class Card implements Comparable<Card> {
     public boolean equals(Card other) {
         return this.color.equals(other.color) && (this.number == other.number);
     }
+    
+    @Override
+    public String toString() {
+        return this.getColor().toString() + this.getNumber();
+    }
 
 } //end of Card class
