@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.util.Collection;
 
 /**
  * An implementation of the game Red7, by Asmadi Games.  Only includes two card colors: violet and indigo.  Thanks to Asmadi Games for granting me permission to use their game rules for educational purposes.  This implementation is intended to be terrible, and will be updated during the semester in a Software Engineering course.
@@ -54,8 +55,12 @@ public class Red7 extends Application {
         Deck deck = new Deck();
         
         
+        Collection<Card> playerAHand = new ArrayList<Card>();
+        Collection<Card> playerBHand = new ArrayList<Card>();
+        Collection<Card> playerAPalette = new ArrayList<Card>();
+        Collection<Card> playerBPalette = new ArrayList<Card>();
         
-        
+        //TODO: delete these later
         int[] playerAHandNums = new int[2];
         int[] BHandNums = new int[2];
         int[] APaletteNums = new int[1];
@@ -67,6 +72,7 @@ public class Red7 extends Application {
         String[] playerAPaletteColors = new String[1];
         
         String canvasColor = "Red";
+        CardColor ruleColor = new CardColor.Red();
         
         Random randGen = new Random();
         
@@ -74,34 +80,38 @@ public class Red7 extends Application {
         
         //deal the first card
         Card nextCard = deck.dealCard();
-        String color = nextCard.getColor();
+        playerAPalette.add(nextCard);
+        
+        //TODO: remove when unneeded
+        String color = nextCard.getColor().toString();
         int number = nextCard.getNumber();
         
-        
+        //TODO: remove these
         APaletteNums[0] = number;
         playerAPaletteColors[0] = color;
         
         
         //deal the second card
         nextCard = deck.dealCard();
-        color = nextCard.getColor();
+        playerBPalette.add(nextCard);
+        
+        //TODO: delete these later
+        color = nextCard.getColor().toString();
         number = nextCard.getNumber();
-        
-        
-        
-        
         playerBPaletteNumbers[0] = number;
         BPaletteColors[0] = color;
+        
         
         
         //deal the cards to player A's hand
         for (int i = 0; i < STARTING_HAND_SIZE; i ++) {
             //get the next card
             nextCard = deck.dealCard();
-            color = nextCard.getColor();
+            playerAHand.add(nextCard);
+            
+            //TODO: remove these
+            color = nextCard.getColor().toString();
             number = nextCard.getNumber();
-            
-            
             //add to A's hand
             playerAHandNums[i] = number;
             AHandColors[i] = color;
@@ -113,10 +123,11 @@ public class Red7 extends Application {
         for (int i = 0; i < STARTING_HAND_SIZE; i ++) {
             //get the next card
             nextCard = deck.dealCard();
-            color = nextCard.getColor();
+            playerBHand.add(nextCard);
+            
+            //TODO: remove these
+            color = nextCard.getColor().toString();
             number = nextCard.getNumber();
-            
-            
             //add to A's hand
             BHandNums[i] = number;
             playerBHandColors[i] = color;
