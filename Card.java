@@ -35,8 +35,12 @@ public class Card implements Comparable<Card> {
      */
     public Card(String color, int number) {
         this.number = number;
-        if (color.equals("Red")) {
+        if (color.equalsIgnoreCase("Red")) {
             this.color = new CardColor.Red();
+        } else if (color.equalsIgnoreCase("Indigo")) {
+            this.color = new CardColor.Indigo();
+        } else if (color.equalsIgnoreCase("Violet")) {
+            this.color = new CardColor.Violet();
         } else {
             throw new RuntimeException("Illegal color for Card Constructor: " + color);
         }

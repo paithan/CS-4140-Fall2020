@@ -160,15 +160,48 @@ public abstract class CardColor {
             return "Indigo";
         }
         
+    } //end of Indigo class
+    
+    /**
+     * Models the color Violet in Red7.
+     */
+    public static class Violet extends CardColor {
+        
+        /**
+         * Constructor.
+         */
+        public Violet() {
+            super(1);
+        } 
+        
+        @Override
+        public Collection<Card> getFittingCards(Collection<Card> palette) {
+            Collection<Card> belowFour = new ArrayList<Card>();
+            for (Card card : palette) {
+                if (card.getNumber() < 4) {
+                    belowFour.add(card);
+                }
+            }
+            return belowFour;
+        }
         
     
-    } //end of Indigo class
+        @Override
+        public String toString() {
+            return "Violet";
+        }
+    
+    } //end of Violet class
     
     /**
      * Main method for testing.
      */
     public static void main(String[] args) {
         CardColor red = new Red();
+        CardColor indigo = new Indigo();
+        CardColor violet = new Violet();
+        
+        
         int compare = red.compareTo(red);
         if (compare != 0) {
             System.out.println("red should compare evenly to itself, but instead we got: " + compare);
@@ -182,7 +215,6 @@ public abstract class CardColor {
             System.out.println("getValue works!");
         }
         
-        CardColor indigo = new Indigo();
         Collection<Card> cards = new ArrayList<Card>();
         cards.add(new Card(red, 7));
         cards.add(new Card(red, 1));
@@ -236,12 +268,68 @@ public abstract class CardColor {
         cards.add(new Card(red, 5));
         fitting = indigo.getFittingCards(cards);
         assert fitting.size() == 2 && fitting.contains(new Card(red, 2)) && fitting.contains(new Card(indigo, 3)) : "fitting is " + fitting + "!";
-        System.out.println(fitting);
         
         
+        cards = new ArrayList<Card>();
+        cards.add(new Card(indigo, 3));
+        cards.add(new Card(red, 5));
+        cards.add(new Card(red, 2));
+        cards.add(new Card(indigo, 6));
+        fitting = indigo.getFittingCards(cards);
+        assert fitting.size() == 2 && fitting.contains(new Card(red, 5)) && fitting.contains(new Card(indigo, 6)) : "fitting is " + fitting + "!";
+        
+        cards = new ArrayList<Card>();
+        cards.add(new Card(indigo, 3));
+        cards.add(new Card(red, 5));
+        cards.add(new Card(red, 2));
+        cards.add(new Card(indigo, 6));
+        cards.add(new Card(indigo, 1));
+        cards.add(new Card(indigo, 2));
+        fitting = indigo.getFittingCards(cards);
+        assert fitting.size() == 3 && fitting.contains(new Card(red, 2)) 
+                                   && fitting.contains(new Card(indigo, 3)) 
+                                   && fitting.contains(new Card(indigo, 1)): "fitting is " + fitting + "!";
+        
+        
+        //tests for Violet's rule!
+        cards = new ArrayList<Card>();
+        cards.add(new Card(indigo, 3));
+        cards.add(new Card(red, 5));
+        cards.add(new Card(red, 2));
+        cards.add(new Card(indigo, 6));
+        cards.add(new Card(indigo, 1));
+        cards.add(new Card(indigo, 2));
+        fitting = violet.getFittingCards(cards);
+        assert fitting.size() == 4 && fitting.contains(new Card(red, 2)) 
+                                   && fitting.contains(new Card(indigo, 3)) 
+                                   && fitting.contains(new Card(indigo, 2)) 
+                                   && fitting.contains(new Card(indigo, 1)): "fitting is " + fitting + "!";
+                                   
+        
+        
+        cards = new ArrayList<Card>();
+        cards.add(new Card(violet, 3));
+        cards.add(new Card(red, 5));
+        cards.add(new Card(red, 2));
+        cards.add(new Card(indigo, 6));
+        cards.add(new Card(indigo, 1));
+        cards.add(new Card(indigo, 2));
+        fitting = violet.getFittingCards(cards);
+        assert fitting.size() == 4 && fitting.contains(new Card(red, 2)) 
+                                   && fitting.contains(new Card(violet, 3)) 
+                                   && fitting.contains(new Card(indigo, 2)) 
+                                   && fitting.contains(new Card(indigo, 1)): "fitting is " + fitting + "!";
+        
+        
+        cards = new ArrayList<Card>();
+        cards.add(new Card(red, 5));
+        cards.add(new Card(indigo, 6));
+        cards.add(new Card(indigo, 4));
+        cards.add(new Card(indigo, 7));
+        fitting = violet.getFittingCards(cards);
+        assert fitting.size() == 0: "fitting is " + fitting + "!";
         
         System.out.println("All tests worked!");
-        //assert fitting.size() == 2 && red7.equals(new Card(red, 7)) : "Breaking on purpose!";
     }
     
 
