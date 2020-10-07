@@ -3,12 +3,12 @@
  *
  * @author CS 4140 Class
  */
-public class Card {
+public class Card implements Comparable<Card> {
 
     //fields
     
     //the color of this card
-    private String color;
+    private CardColor color;
     
     //the number of this card
     private int number;
@@ -22,9 +22,39 @@ public class Card {
      * @param color  The color of the card.
      * @param number  The number of this card.
      */
-    public Card(String color, int number) {
+    public Card(CardColor color, int number) {
         this.color = color;
         this.number = number;
+    }
+    
+    /**
+     * constructor
+     *
+     * @param color  The color of the card as a String.
+     * @param number  The number of this card.
+     */
+    public Card(String color, int number) {
+        this.number = number;
+        if (color.equalsIgnoreCase("Red")) {
+            this.color = new CardColor.Red();
+        } else if (color.equalsIgnoreCase("Indigo")) {
+            this.color = new CardColor.Indigo();
+        } else if (color.equalsIgnoreCase("Violet")) {
+            this.color = new CardColor.Violet();
+        } else {
+            throw new RuntimeException("Illegal color for Card Constructor: " + color);
+        }
+    }
+    
+    //implements a max comparator
+    @Override
+    public int compareTo(Card other) {
+        int difference = other.getNumber() - this.getNumber();
+        if (difference != 0) {
+            return difference;
+        } else {
+            return other.getColor().getValue() - this.getColor().getValue();
+        }
     }
     
     
@@ -35,7 +65,7 @@ public class Card {
      *
      * @return The color of this card.
      */
-    public String getColor() {
+    public CardColor getColor() {
         return this.color;
     }
     
@@ -67,6 +97,11 @@ public class Card {
      */
     public boolean equals(Card other) {
         return this.color.equals(other.color) && (this.number == other.number);
+    }
+    
+    @Override
+    public String toString() {
+        return this.getColor().toString() + this.getNumber();
     }
 
 } //end of Card class
