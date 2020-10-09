@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 import java.util.Collections;
+import javafx.scene.paint.Color;
 
 /**
  * Models a single color in Red7.
@@ -21,8 +22,13 @@ public abstract class CardColor {
         this.value = value;
     }
     
-
-    //TODO: implement equals
+    /**
+     * Returns the color for the display.
+     *
+     * @return  The Color associated with this color.
+     */
+    public abstract Color getGuiColor();
+    
 
     
     /**
@@ -33,6 +39,16 @@ public abstract class CardColor {
      */
     public int compareTo(CardColor other) {
         return other.getValue() - this.getValue();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        try {
+            CardColor other = (CardColor) obj;
+            return this.compareTo(other) == 0;
+        } catch (ClassCastException e) {
+            return false;
+        }
     }
     
     //returns the value of this color as an integer
@@ -57,6 +73,11 @@ public abstract class CardColor {
     
         public Red() {
             super(7);
+        }
+        
+        @Override
+        public Color getGuiColor() {
+            return Color.RED;
         }
         
         @Override
@@ -86,6 +107,11 @@ public abstract class CardColor {
         public Indigo() {
             super(2);
         } 
+        
+        @Override
+        public Color getGuiColor() {
+            return Color.INDIGO;
+        }
         
         @Override
         public Collection<Card> getFittingCards(Collection<Card> palette) {
@@ -173,6 +199,11 @@ public abstract class CardColor {
         public Violet() {
             super(1);
         } 
+        
+        @Override
+        public Color getGuiColor() {
+            return Color.VIOLET;
+        }
         
         @Override
         public Collection<Card> getFittingCards(Collection<Card> palette) {

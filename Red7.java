@@ -50,6 +50,12 @@ public class Red7 extends Application {
      */
     public void start(Stage primaryStage) {
     
+        //TODO: remove this in the end
+        Map<String, CardColor> stringToColor = new HashMap<String, CardColor>();
+        stringToColor.put("Red", new CardColor.Red());
+        stringToColor.put("Indigo", new CardColor.Indigo());
+        stringToColor.put("Violet", new CardColor.Violet());
+    
         primaryStage.setTitle("Red 7");
         
         Deck deck = new Deck();
@@ -303,7 +309,8 @@ public class Red7 extends Application {
                             int numberPick = playerAHandNums[0];
                             int handIndex = 0;
                             boolean playOkay = false;
-                            if (canvasColor.equals("Red")) {
+//                            if (canvasColor.equals("Red")) {
+                            if (ruleColor.equals(new CardColor.Red())) {
                                 String bHighestColor = BPaletteColors[0];
                                 int bHighestNumber = playerBPaletteNumbers[0];
                                 for (int i = 1; i < BPaletteColors.length; i++) {
@@ -323,7 +330,8 @@ public class Red7 extends Application {
                                 if (aHighestNumber > bHighestNumber || (aHighestNumber == bHighestNumber && aHighestColor.equals("Indigo"))) {
                                     playOkay = true;
                                 }
-                            } else if (canvasColor.equals("Indigo")) {
+//                            } else if (canvasColor.equals("Indigo")) {
+                            } else if (ruleColor.equals(new CardColor.Indigo())) {
                                 boolean[] numsB = new boolean[] {false, false, false, false, false, false, false, false};
                                 boolean[] numsA = new boolean[] {false, false, false, false, false, false, false, false};
                                 String[] colorsA = new String[] {"", "", "", "", "", "", "", ""};
@@ -373,7 +381,8 @@ public class Red7 extends Application {
                                     playOkay = true;
                                 }
                                 
-                            } else if (canvasColor.equals("Violet")) {
+//                            } else if (canvasColor.equals("Violet")) {
+                            } else if (ruleColor.equals(new CardColor.Violet())) {
                                 int numBSmall = 0;
                                 int highSmallB = 0;
                                 for (int i = 0; i < BPaletteColors.length; i++) {
@@ -453,7 +462,8 @@ public class Red7 extends Application {
                             int numberPick = playerAHandNums[1];
                             int handIndex = 1;
                             boolean playOkay = false;
-                            if (canvasColor.equals("Red")) {
+//                            if (canvasColor.equals("Red")) {
+                            if (ruleColor.equals(new CardColor.Red())) {
                                 String bHighestColor = BPaletteColors[0];
                                 int bHighestNumber = playerBPaletteNumbers[0];
                                 for (int i = 1; i < BPaletteColors.length; i++) {
@@ -473,7 +483,8 @@ public class Red7 extends Application {
                                 if (aHighestNumber > bHighestNumber || (aHighestNumber == bHighestNumber && aHighestColor.equals("Indigo"))) {
                                     playOkay = true;
                                 }
-                            } else if (canvasColor.equals("Indigo")) {
+//                            } else if (canvasColor.equals("Indigo")) {
+                            } else if (ruleColor.equals(new CardColor.Indigo())) {
                                 boolean[] numsB = new boolean[] {false, false, false, false, false, false, false, false};
                                 boolean[] numsA = new boolean[] {false, false, false, false, false, false, false, false};
                                 String[] colorsA = new String[] {"", "", "", "", "", "", "", ""};
@@ -523,7 +534,8 @@ public class Red7 extends Application {
                                     playOkay = true;
                                 }
                                 
-                            } else if (canvasColor.equals("Violet")) {
+//                            } else if (canvasColor.equals("Violet")) {
+                            } else if (ruleColor.equals(new CardColor.Violet())) {
                                 int numBSmall = 0;
                                 int highSmallB = 0;
                                 for (int i = 0; i < BPaletteColors.length; i++) {
@@ -598,7 +610,7 @@ public class Red7 extends Application {
                             }
                         }
                         
-                        System.out.println("That move did not help you to win.  Let's try that again...  (canvasColor: " + canvasColor + ")");
+                        System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
                         
                         
                         
@@ -724,7 +736,8 @@ public class Red7 extends Application {
                             if (playOkay) {
                                 System.out.println("Made a legal play to the canvas!");
                                 
-                                canvasColor = colorPick;
+                                //canvasColor = colorPick;
+                                ruleColor = stringToColor.get(colorPick);
                                 
                                 /*
                                 String[] newAPaletteColors = new String[playerAPaletteColors.length + 1];
@@ -767,7 +780,8 @@ public class Red7 extends Application {
                             int numberPick = playerAHandNums[1];
                             int handIndex = 1;
                             boolean playOkay = false;
-                            if (canvasColor.equals("Red")) {
+//                            if (canvasColor.equals("Red")) {
+                            if (ruleColor.equals(new CardColor.Red())) {
                                 String bHighestColor = BPaletteColors[0];
                                 int bHighestNumber = playerBPaletteNumbers[0];
                                 for (int i = 1; i < BPaletteColors.length; i++) {
@@ -787,7 +801,8 @@ public class Red7 extends Application {
                                 if (aHighestNumber > bHighestNumber || (aHighestNumber == bHighestNumber && aHighestColor.equals("Indigo"))) {
                                     playOkay = true;
                                 }
-                            } else if (canvasColor.equals("Indigo")) {
+                            //} else if (canvasColor.equals("Indigo")) {
+                            } else if (ruleColor.equals(new CardColor.Indigo())) {
                                 boolean[] numsB = new boolean[] {false, false, false, false, false, false, false, false};
                                 boolean[] numsA = new boolean[] {false, false, false, false, false, false, false, false};
                                 String[] colorsA = new String[] {"", "", "", "", "", "", "", ""};
@@ -833,7 +848,8 @@ public class Red7 extends Application {
                                     playOkay = true;
                                 }
                                 
-                            } else if (canvasColor.equals("Violet")) {
+                            //} else if (canvasColor.equals("Violet")) {
+                            } else if (ruleColor.equals(new CardColor.Violet())) {
                                 int numBSmall = 0;
                                 int highSmallB = 0;
                                 for (int i = 0; i < BPaletteColors.length; i++) {
@@ -872,7 +888,9 @@ public class Red7 extends Application {
                             if (playOkay) {
                                 System.out.println("Made a legal play to the canvas!");
                                 
-                                canvasColor = colorPick;
+                                //canvasColor = colorPick;
+                                ruleColor = stringToColor.get(colorPick);
+                                
                                 /*
                                 
                                 String[] newAPaletteColors = new String[playerAPaletteColors.length + 1];
@@ -911,7 +929,7 @@ public class Red7 extends Application {
                             }
                         }
                         
-                        System.out.println("That move did not help you to win.  Let's try that again...  (canvasColor: " + canvasColor + ")");
+                        System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
                         
                         
                         
@@ -1077,7 +1095,8 @@ public class Red7 extends Application {
                                 if (playOkay) {
                                     System.out.println("Made a legal play to both the palette and canvas!");
                                     
-                                    canvasColor = canvasColorPick;
+                                    //canvasColor = canvasColorPick;
+                                    ruleColor = stringToColor.get(canvasColorPick);
                                     
                                     String[] newAPaletteColors = new String[playerAPaletteColors.length + 1];
                                     int[] newAPaletteNums = new int[APaletteNums.length + 1];
@@ -1103,7 +1122,7 @@ public class Red7 extends Application {
                             }
                         }
                         
-                        System.out.println("That move did not help you to win.  Let's try that again...  (canvasColor: " + canvasColor + ")");
+                        System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
                     }
                 }
                 
@@ -1153,13 +1172,16 @@ public class Red7 extends Application {
             
             board.getChildren().add(new Text("Canvas"));
             
+            /*
+            TODO: refactoring out
             if (canvasColor.equals("Red")) {
                 board.getChildren().add(new Rectangle(175, 125, Color.RED));
             } else if (canvasColor.equals("Indigo")) {
                 board.getChildren().add(new Rectangle(175, 125, Color.INDIGO));
             } else  if (canvasColor.equals("Violet")) {
                 board.getChildren().add(new Rectangle(175, 125, Color.VIOLET));
-            }
+            }*/
+            board.getChildren().add(new Rectangle(175, 125, ruleColor.getGuiColor()));
             
             board.getChildren().add(new Separator());
             
@@ -1266,7 +1288,8 @@ public class Red7 extends Application {
                         String colorPick = playerBHandColors[handIndex];
                         int numberPick = BHandNums[handIndex];
                         boolean playOkay = false;
-                        if (canvasColor.equals("Red")) {
+//                            if (canvasColor.equals("Red")) {
+                        if (ruleColor.equals(new CardColor.Red())) {
                             String bHighestColor = colorPick;
                             int bHighestNumber = numberPick;
                             for (int i = 0; i < BPaletteColors.length; i++) {
@@ -1286,7 +1309,8 @@ public class Red7 extends Application {
                             if (aHighestNumber < bHighestNumber || (aHighestNumber == bHighestNumber && aHighestColor.equals("Violet"))) {
                                 playOkay = true;
                             }
-                        } else if (canvasColor.equals("Indigo")) {
+                        //} else if (canvasColor.equals("Indigo")) {
+                          } else if (ruleColor.equals(new CardColor.Indigo())) {
                             boolean[] numsB = new boolean[] {false, false, false, false, false, false, false, false};
                             boolean[] numsA = new boolean[] {false, false, false, false, false, false, false, false};
                             String[] colorsA = new String[] {"", "", "", "", "", "", "", ""};
@@ -1333,7 +1357,8 @@ public class Red7 extends Application {
                                 playOkay = true;
                             }
                             
-                        } else if (canvasColor.equals("Violet")) {
+                        //} else if (canvasColor.equals("Violet")) {
+                        } else if (ruleColor.equals(new CardColor.Violet())) {
                             int numBSmall = 0;
                             int highSmallB = 0;
                             if (numberPick < 4) {
@@ -1407,7 +1432,7 @@ public class Red7 extends Application {
                         }
                     } 
                     
-                    System.out.println("That move did not help you to win.  Let's try that again...  (canvasColor: " + canvasColor + ")");
+                    System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
                     
                     
                     
@@ -1538,7 +1563,8 @@ public class Red7 extends Application {
                         if (playOkay) {
                             System.out.println("Made a legal play to the canvas!");
                             
-                            canvasColor = colorPick;
+//                            canvasColor = colorPick;
+                            ruleColor = stringToColor.get(colorPick);
                             
                             /*
                             String[] newAPaletteColors = new String[playerAPaletteColors.length + 1];
@@ -1578,7 +1604,7 @@ public class Red7 extends Application {
                         }
                     }
                     
-                    System.out.println("That move did not help you to win.  Let's try that again...  (canvasColor: " + canvasColor + ")");
+                    System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
                     
                     
                     
@@ -1743,6 +1769,7 @@ public class Red7 extends Application {
                                 System.out.println("Made a legal play to both the palette and canvas!");
                                 
                                 canvasColor = canvasColorPick;
+                                ruleColor = stringToColor.get(canvasColorPick);
                                 
                                 String[] newBPaletteColors = new String[BPaletteColors.length + 1];
                                 int[] newBPaletteNums = new int[BPaletteColors.length + 1];
@@ -1820,13 +1847,16 @@ public class Red7 extends Application {
             
             board.getChildren().add(new Text("Canvas"));
             
+            /*
+            TODO: refactor out
             if (canvasColor.equals("Red")) {
                 board.getChildren().add(new Rectangle(175, 125, Color.RED));
             } else if (canvasColor.equals("Indigo")) {
                 board.getChildren().add(new Rectangle(175, 125, Color.INDIGO));
             } else  if (canvasColor.equals("Violet")) {
                 board.getChildren().add(new Rectangle(175, 125, Color.VIOLET));
-            }
+            }*/
+            board.getChildren().add(new Rectangle(175, 125, ruleColor.getGuiColor()));
             
             board.getChildren().add(new Separator());
             
