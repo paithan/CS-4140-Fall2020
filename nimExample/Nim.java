@@ -13,6 +13,18 @@ public abstract class Nim {
      * Returns all the possible moves from this Nim game.
      */
     public abstract Collection<Nim> getMoves();
+    
+    /**
+     * Returns the nimber value of a position.
+     */
+    public abstract int getNimber(); 
+    
+    /**
+     * Returns whether there is a winning move from this game position.
+     */
+    public boolean hasWinningMove() {
+        return this.getNimber() != 0;
+    }
 
     
     //a single row in Nim
@@ -43,6 +55,11 @@ public abstract class Nim {
             }
             
             return moves;
+        }
+        
+        @Override
+        public int getNimber() {
+            return numSticks;
         }
         
     
@@ -88,19 +105,38 @@ public abstract class Nim {
             
             return moves;
         }
+        
+        @Override
+        public int getNimber() {
+            return left.getNimber() ^ right.getNimber();
+        }
     
     
     } //end of CompositeNim
     
     
     public static void main(String[] args) {
+        
+        /*Nim nim = new Nim(3, 5, 7);
+        Nim nim = new Nim(new int[] {3, 5, 7});*/
+        
+        Nim nim = Nim.createNim(new int[] {3, 5, 7}); //this doesn't compile (yet)
+    
         Nim top = new NimRow(3);
         Nim middle = new NimRow(5);
         Nim top2 = new CompositeNim(top, middle);
         Nim bottom = new NimRow(7);
         Nim all = new CompositeNim(top2, bottom);
         System.out.println("Wanna play a game?\n" + all.toString());
-        System.out.println("Moves: " + all.getMoves());
+        System.out.println("Moves: ");
+        for ( Nim move : all.getMoves()) {
+            System.out.println("Move option:\n" + move);
+            System.out.println("Is a winning move: " + (move.hasWinningMove() ? "Nope!" : "Yes!") + "\n");
+        }
+        
+        int x = 5;
+        int y = 6;
+        System.out.println(x ^ y);
     }
 
 
