@@ -25,6 +25,18 @@ public abstract class Nim {
     public boolean hasWinningMove() {
         return this.getNimber() != 0;
     }
+    
+    /**
+     * Creates a new Nim position.
+     */
+    public static Nim createNim(int[] piles) {
+        Nim total = new NimRow(piles[0]);
+        for (int i = 1; i < piles.length; i++) {
+            Nim nimParent = new CompositeNim(total, new NimRow(piles[i]));
+            total = nimParent;
+        }
+        return total;
+    }
 
     
     //a single row in Nim
@@ -121,12 +133,7 @@ public abstract class Nim {
         Nim nim = new Nim(new int[] {3, 5, 7});*/
         
         Nim nim = Nim.createNim(new int[] {3, 5, 7}); //this doesn't compile (yet)
-    
-        Nim top = new NimRow(3);
-        Nim middle = new NimRow(5);
-        Nim top2 = new CompositeNim(top, middle);
-        Nim bottom = new NimRow(7);
-        Nim all = new CompositeNim(top2, bottom);
+        Nim all = nim;
         System.out.println("Wanna play a game?\n" + all.toString());
         System.out.println("Moves: ");
         for ( Nim move : all.getMoves()) {
