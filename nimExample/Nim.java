@@ -1,6 +1,7 @@
 import java.lang.StringBuilder;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Represents a game of Nim.
@@ -126,24 +127,86 @@ public abstract class Nim {
     
     } //end of CompositeNim
     
+    /**
+     * Creates the same board.
+     */
+    public static class SpecificNimGenerator extends NimCreator {
+    
+        //the piles that we will create from
+        private int[] piles;
+    
+        /**
+         * Class Constructor.
+         */
+        public SpecificNimGenerator(int[] piles) {
+            this.piles = new int[piles.length];
+            for (int i = 0; i < piles.length; i++) {
+                this.piles[i] = piles[i];
+            }
+        }
+        
+        @Override
+        public Nim createNim() {
+            Nim total = new NimRow(this.piles[0]);
+            for (int i = 1; i < this.piles.length; i++) {
+                Nim nimParent = new CompositeNim(total, new NimRow(this.piles[i]));
+                total = nimParent;
+            }
+            return total;
+        }
+    
+    } //end of SpecificNimGenerator
+    
+    /**
+     * Creates a random board.
+     */
+    public static class RandomNimGenerator extends NimCreator {
+        
+        @Override
+        public Nim createNim() {
+            Random gen = new Random();
+            
+            //create the piles
+            int numPiles = gen.nextInt(5) + 1;
+            int[] piles = new int[numPiles];
+            for (int i = 0; i < piles.length; i++) {
+                piles[i] = gen.nextInt(9) + 1;
+            }
+            
+            //create the nim object from those piles
+            Nim total = new NimRow(piles[0]);
+            for (int i = 1; i < piles.length; i++) {
+                Nim nimParent = new CompositeNim(total, new NimRow(piles[i]));
+                total = nimParent;
+            }
+            return total;
+            
+        }
+    
+    } //end of RandomNimGenerator
+    
+    
     
     public static void main(String[] args) {
         
         /*Nim nim = new Nim(3, 5, 7);
         Nim nim = new Nim(new int[] {3, 5, 7});*/
         
-        Nim nim = Nim.createNim(new int[] {3, 5, 7}); //this doesn't compile (yet)
+        NimCreator generator = new Nim.SpecificNimGenerator(new int[] {3, 6, 7});
+        
+        generator = new Nim.RandomNimGenerator();
+        
+        Nim nim = generator.createNim();
         Nim all = nim;
         System.out.println("Wanna play a game?\n" + all.toString());
+        
+        /*
         System.out.println("Moves: ");
         for ( Nim move : all.getMoves()) {
             System.out.println("Move option:\n" + move);
             System.out.println("Is a winning move: " + (move.hasWinningMove() ? "Nope!" : "Yes!") + "\n");
         }
-        
-        int x = 5;
-        int y = 6;
-        System.out.println(x ^ y);
+        */
     }
 
 
