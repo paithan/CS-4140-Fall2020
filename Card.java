@@ -1,3 +1,6 @@
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
+
 /**
  * Models a single Red7 card.
  *
@@ -87,6 +90,25 @@ public class Card implements Comparable<Card> {
         } catch (ClassCastException e) {
             return false;
         }
+    }
+    
+    /**
+     * Returns a graphical JavaFX version of this.
+     */
+    public Node getNode() {
+        StackPane node = new StackPane();
+        
+        //add the colored rectangle to the bottom
+        Rectangle colorRect = new Rectangle(125, 175, this.color.getGuiColor());
+        node.getChildren().add(colorRect);
+        
+        //add the text number on top
+        Text cardNumberText = new Text((String) this.number);
+        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
+        cardNumberText.setFill(Color.WHITE);
+        node.getChildren().add(cardNumberText);
+        
+        return node;
     }
     
     /**

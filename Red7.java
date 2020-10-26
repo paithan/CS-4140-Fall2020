@@ -154,6 +154,8 @@ public class Red7 extends Application {
         board.getChildren().add(handText);
         Pane aHandCards = new HBox();
         board.getChildren().add(aHandCards);
+        
+        /*
         StackPane aHandCard0Pane = new StackPane();
         Rectangle aHandCard0 = new Rectangle(125, 175, Color.VIOLET);
         if (AHandColors[0].equals("Indigo")) {
@@ -164,9 +166,9 @@ public class Red7 extends Application {
         cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
         cardNumberText.setFill(Color.WHITE);
         aHandCard0Pane.getChildren().add(cardNumberText);
-        aHandCards.getChildren().add(aHandCard0Pane);
+        aHandCards.getChildren().add(aHandCard0Pane);*/
         
-        
+        /*
         StackPane aHandCard1Pane = new StackPane();
         aHandCard0 = new Rectangle(125, 175, Color.VIOLET);
         if (AHandColors[1].equals("Indigo")) {
@@ -178,6 +180,12 @@ public class Red7 extends Application {
         cardNumberText.setFill(Color.WHITE);
         aHandCard1Pane.getChildren().add(cardNumberText);
         aHandCards.getChildren().add(aHandCard1Pane);
+        */
+        
+        
+        for (Card card : playerAHand) {
+            aHandCards.getChildren().add(card.getNode());
+        }
         
         board.getChildren().add(new Separator());
         
