@@ -1,5 +1,10 @@
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 /**
  * Models a single Red7 card.
@@ -103,8 +108,13 @@ public class Card implements Comparable<Card> {
         node.getChildren().add(colorRect);
         
         //add the text number on top
-        Text cardNumberText = new Text((String) this.number);
+        Text cardNumberText = new Text(Integer.toString(this.number));
         cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
+        cardNumberText.setFill(Color.WHITE);
+        node.getChildren().add(cardNumberText);
+        
+        cardNumberText = new Text("\n\n\n\n\n\n\n\n\n\n" + this.color.getRule());
+        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 10.0));
         cardNumberText.setFill(Color.WHITE);
         node.getChildren().add(cardNumberText);
         

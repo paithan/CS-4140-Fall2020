@@ -29,6 +29,12 @@ public abstract class CardColor {
      */
     public abstract Color getGuiColor();
     
+    
+    /**
+     * Returns the text (for humans) of this rule.
+     */
+    public abstract String getRule();
+    
 
     
     /**
@@ -90,6 +96,11 @@ public abstract class CardColor {
             collection.add(highest);
             
             return collection;
+        }
+        
+        @Override
+        public String getRule() {
+            return "Highest card";
         }
     
         @Override
@@ -180,6 +191,11 @@ public abstract class CardColor {
             //return runs.get(0);
             
         }
+        
+        @Override
+        public String getRule() {
+            return "Most cards in a row";
+        }
     
         @Override
         public String toString() {
@@ -214,6 +230,11 @@ public abstract class CardColor {
                 }
             }
             return belowFour;
+        }
+        
+        @Override
+        public String getRule() {
+            return "Most below four";
         }
         
     

@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import java.util.Collection;
 import java.util.Map;
 import java.util.HashMap;
+import javafx.scene.Node;
 
 /**
  * An implementation of the game Red7, by Asmadi Games.  Only includes two card colors: violet and indigo.  Thanks to Asmadi Games for granting me permission to use their game rules for educational purposes.  This implementation is intended to be terrible, and will be updated during the semester in a Software Engineering course.
@@ -44,6 +45,24 @@ public class Red7 extends Application {
     }
     
     
+    
+    //returns an HBox with the cards in it.
+    private Node getHorizontalCardsNode(Collection<Card> cards) {
+        Pane cardsBox = new HBox();
+        for (Card card : cards) {
+            cardsBox.getChildren().add(card.getNode());
+        }
+        return cardsBox;
+    }
+    
+    //adds an HBox with the cards to the children of the given pane
+    private void addCardsHorizontally(Collection<Card> cards, Pane pane) {
+        Pane cardsBox = new HBox();
+        for (Card card : cards) {
+            cardsBox.getChildren().add(card.getNode());
+        }
+        pane.getChildren().add(cardsBox);
+    }
     
     
 
@@ -152,8 +171,8 @@ public class Red7 extends Application {
         //Creates GUI for player A's hand
         Text handText = new Text("Player A's Hand");
         board.getChildren().add(handText);
-        Pane aHandCards = new HBox();
-        board.getChildren().add(aHandCards);
+        
+        Text cardNumberText;
         
         /*
         StackPane aHandCard0Pane = new StackPane();
@@ -183,17 +202,33 @@ public class Red7 extends Application {
         */
         
         
+        Pane aHandCards; //= new HBox();
+        
+        /*
         for (Card card : playerAHand) {
             aHandCards.getChildren().add(card.getNode());
         }
+        board.getChildren().add(aHandCards);*/
+        
+        
+        this.addCardsHorizontally(playerAHand, board);
+        
         
         board.getChildren().add(new Separator());
         
         
         //Creating GUI for Player A's Palette
         board.getChildren().add(new Text("Player A's Palette"));
-        StackPane aPalette = new StackPane();
-        Rectangle aPaletteR = new Rectangle(125, 175, Color.VIOLET);
+        
+        this.addCardsHorizontally(playerAPalette, board);
+        
+        
+        
+        StackPane aPalette; // = new StackPane();
+        
+        
+        Rectangle aPaletteR; // = new Rectangle(125, 175, Color.VIOLET);
+        /*
         if (playerAPaletteColors[0].equals("Indigo")) {
             aPaletteR.setFill(Color.INDIGO);
         }
@@ -202,9 +237,14 @@ public class Red7 extends Application {
         cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
         cardNumberText.setFill(Color.WHITE);
         aPalette.getChildren().add(cardNumberText);
-        board.getChildren().add(aPalette);
+        board.getChildren().add(aPalette);*/
+        
+        
+        
         
         board.getChildren().add(new Separator());
+        
+        
         
         board.getChildren().add(new Text("Canvas"));
         
@@ -212,9 +252,16 @@ public class Red7 extends Application {
         
         board.getChildren().add(new Separator());
         
+        
         board.getChildren().add(new Text("Player B's Palette"));
-        StackPane bPalette = new StackPane();
-        Rectangle bPaletteR = new Rectangle(125, 175, Color.VIOLET);
+        
+        this.addCardsHorizontally(playerBPalette, board);
+        
+        
+        StackPane bPalette; // = new StackPane();
+        
+        Rectangle bPaletteR; // = new Rectangle(125, 175, Color.VIOLET);
+        /*
         if (BPaletteColors[0].equals("Indigo")) {
             bPaletteR.setFill(Color.INDIGO);
         }
@@ -223,12 +270,21 @@ public class Red7 extends Application {
         cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
         cardNumberText.setFill(Color.WHITE);
         bPalette.getChildren().add(cardNumberText);
-        board.getChildren().add(bPalette);
+        board.getChildren().add(bPalette);*/
+        
+        
         
         board.getChildren().add(new Separator());
         
+        
+        
         board.getChildren().add(new Text("Player B's Hand"));
-        HBox bHandCards = new HBox();
+        
+        this.addCardsHorizontally(playerBHand, board);
+        
+        
+        HBox bHandCards; // = new HBox();
+        /*
         board.getChildren().add(bHandCards);
         
         StackPane bHandCard0Pane = new StackPane();
@@ -253,7 +309,7 @@ public class Red7 extends Application {
         cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
         cardNumberText.setFill(Color.WHITE);
         bHandCard1Pane.getChildren().add(cardNumberText);
-        bHandCards.getChildren().add(bHandCard1Pane);
+        bHandCards.getChildren().add(bHandCard1Pane);*/
         
         
         primaryStage.setScene(new Scene(board));
