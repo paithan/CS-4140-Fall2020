@@ -65,11 +65,84 @@ public class Red7 extends Application {
     }
     
     
+    //draws the board on the stage
+    private void drawBoard(Stage stage, Collection<Card> playerAHand, Collection<Card> playerBHand, Collection<Card> playerAPalette, Collection<Card> playerBPalette, CardColor ruleColor) {
+        
+        //Creates overall GUI
+        VBox board = new VBox();
+        board.setSpacing(2);
+        
+        //Creates GUI for player A's hand
+        Text handText = new Text("Player A's Hand");
+        board.getChildren().add(handText);
+        
+        Text cardNumberText;
+        
+        
+        this.addCardsHorizontally(playerAHand, board);
+        
+        
+        board.getChildren().add(new Separator());
+        
+        
+        //Creating GUI for Player A's Palette
+        board.getChildren().add(new Text("Player A's Palette"));
+        
+        this.addCardsHorizontally(playerAPalette, board);
+        
+        board.getChildren().add(new Separator());
+        
+        board.getChildren().add(new Text("Canvas"));
+        
+        // draw the canvas card
+        StackPane canvasNode = new StackPane();
+        
+        //add the colored rectangle to the bottom
+        Rectangle colorRect = new Rectangle(175, 125, ruleColor.getGuiColor());
+        canvasNode.getChildren().add(colorRect);
+        
+        //add the text number on top
+        cardNumberText = new Text("\n\n\n\n\n" + ruleColor.getRule());
+        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 10.0));
+        cardNumberText.setFill(Color.WHITE);
+        canvasNode.getChildren().add(cardNumberText);
+        
+        board.getChildren().add(canvasNode);
+        
+        
+        
+        board.getChildren().add(new Separator());
+        
+        
+        board.getChildren().add(new Text("Player B's Palette"));
+        
+        this.addCardsHorizontally(playerBPalette, board);
+        
+        board.getChildren().add(new Separator());
+        
+        
+        
+        board.getChildren().add(new Text("Player B's Hand"));
+        
+        this.addCardsHorizontally(playerBHand, board);
+        
+        stage.setScene(new Scene(board));
+        stage.show();
+        stage.sizeToScene();
+    
+    }
+    
+    
 
     /**
      * Start the game.
      */
     public void start(Stage primaryStage) {
+    
+    
+        
+        
+    
     
         //TODO: remove this in the end
         Map<String, CardColor> stringToColor = new HashMap<String, CardColor>();
@@ -164,157 +237,19 @@ public class Red7 extends Application {
         //now all the cards are dealt 
         
         
-        //Creates overall GUI
-        VBox board = new VBox();
-        board.setSpacing(2);
-        
-        //Creates GUI for player A's hand
-        Text handText = new Text("Player A's Hand");
-        board.getChildren().add(handText);
-        
+        //variables declared that are used later.
+        VBox board;
+        Text handText;
         Text cardNumberText;
-        
-        /*
-        StackPane aHandCard0Pane = new StackPane();
-        Rectangle aHandCard0 = new Rectangle(125, 175, Color.VIOLET);
-        if (AHandColors[0].equals("Indigo")) {
-            aHandCard0.setFill(Color.INDIGO);
-        }
-        aHandCard0Pane.getChildren().add(aHandCard0);
-        Text cardNumberText = new Text("" +  playerAHandNums[0]);
-        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-        cardNumberText.setFill(Color.WHITE);
-        aHandCard0Pane.getChildren().add(cardNumberText);
-        aHandCards.getChildren().add(aHandCard0Pane);*/
-        
-        /*
-        StackPane aHandCard1Pane = new StackPane();
-        aHandCard0 = new Rectangle(125, 175, Color.VIOLET);
-        if (AHandColors[1].equals("Indigo")) {
-            aHandCard0.setFill(Color.INDIGO);
-        }
-        aHandCard1Pane.getChildren().add(aHandCard0);
-        cardNumberText = new Text("" + playerAHandNums[1]);
-        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-        cardNumberText.setFill(Color.WHITE);
-        aHandCard1Pane.getChildren().add(cardNumberText);
-        aHandCards.getChildren().add(aHandCard1Pane);
-        */
+        Pane aHandCards; 
+        StackPane aPalette; 
+        Rectangle aPaletteR; 
+        StackPane bPalette; 
+        Rectangle bPaletteR; 
+        HBox bHandCards; 
         
         
-        Pane aHandCards; //= new HBox();
-        
-        /*
-        for (Card card : playerAHand) {
-            aHandCards.getChildren().add(card.getNode());
-        }
-        board.getChildren().add(aHandCards);*/
-        
-        
-        this.addCardsHorizontally(playerAHand, board);
-        
-        
-        board.getChildren().add(new Separator());
-        
-        
-        //Creating GUI for Player A's Palette
-        board.getChildren().add(new Text("Player A's Palette"));
-        
-        this.addCardsHorizontally(playerAPalette, board);
-        
-        
-        
-        StackPane aPalette; // = new StackPane();
-        
-        
-        Rectangle aPaletteR; // = new Rectangle(125, 175, Color.VIOLET);
-        /*
-        if (playerAPaletteColors[0].equals("Indigo")) {
-            aPaletteR.setFill(Color.INDIGO);
-        }
-        aPalette.getChildren().add(aPaletteR);
-        cardNumberText = new Text("" + APaletteNums[0]);
-        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-        cardNumberText.setFill(Color.WHITE);
-        aPalette.getChildren().add(cardNumberText);
-        board.getChildren().add(aPalette);*/
-        
-        
-        
-        
-        board.getChildren().add(new Separator());
-        
-        
-        
-        board.getChildren().add(new Text("Canvas"));
-        
-        board.getChildren().add(new Rectangle(175, 125, Color.RED));
-        
-        board.getChildren().add(new Separator());
-        
-        
-        board.getChildren().add(new Text("Player B's Palette"));
-        
-        this.addCardsHorizontally(playerBPalette, board);
-        
-        
-        StackPane bPalette; // = new StackPane();
-        
-        Rectangle bPaletteR; // = new Rectangle(125, 175, Color.VIOLET);
-        /*
-        if (BPaletteColors[0].equals("Indigo")) {
-            bPaletteR.setFill(Color.INDIGO);
-        }
-        bPalette.getChildren().add(bPaletteR);
-        cardNumberText = new Text("" + playerBPaletteNumbers[0]);
-        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-        cardNumberText.setFill(Color.WHITE);
-        bPalette.getChildren().add(cardNumberText);
-        board.getChildren().add(bPalette);*/
-        
-        
-        
-        board.getChildren().add(new Separator());
-        
-        
-        
-        board.getChildren().add(new Text("Player B's Hand"));
-        
-        this.addCardsHorizontally(playerBHand, board);
-        
-        
-        HBox bHandCards; // = new HBox();
-        /*
-        board.getChildren().add(bHandCards);
-        
-        StackPane bHandCard0Pane = new StackPane();
-        Rectangle bHandCard0R = new Rectangle(125, 175, Color.VIOLET);
-        if (playerBHandColors[0].equals("Indigo")) {
-            bHandCard0R.setFill(Color.INDIGO);
-        }
-        bHandCard0Pane.getChildren().add(bHandCard0R);
-        cardNumberText = new Text("" + BHandNums[0]);
-        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-        cardNumberText.setFill(Color.WHITE);
-        bHandCard0Pane.getChildren().add(cardNumberText);
-        bHandCards.getChildren().add(bHandCard0Pane);
-        
-        StackPane bHandCard1Pane = new StackPane();
-        Rectangle bHandCard1R = new Rectangle(125, 175, Color.VIOLET);
-        if (playerBHandColors[1].equals("Indigo")) {
-            bHandCard1R.setFill(Color.INDIGO);
-        }
-        bHandCard1Pane.getChildren().add(bHandCard1R);
-        cardNumberText = new Text("" + BHandNums[1]);
-        cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-        cardNumberText.setFill(Color.WHITE);
-        bHandCard1Pane.getChildren().add(cardNumberText);
-        bHandCards.getChildren().add(bHandCard1Pane);*/
-        
-        
-        primaryStage.setScene(new Scene(board));
-        primaryStage.show();
-        primaryStage.sizeToScene();
+        this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette, ruleColor);
         
         
         boolean firstFirst = APaletteNums[0] < playerBPaletteNumbers[0] || (APaletteNums[0] == playerBPaletteNumbers[0] && playerAPaletteColors[0].equals("Violet"));
@@ -1194,105 +1129,11 @@ public class Red7 extends Application {
                 
             }
             
-            board = new VBox();
-            board.setSpacing(2);
-            handText = new Text("Player A's Hand");
-            board.getChildren().add(handText);
-            aHandCards = new HBox();
-            board.getChildren().add(aHandCards);
-            for (int i = 0; i < AHandColors.length; i++) {
-                StackPane aHandCardPane = new StackPane();
-                Rectangle aHandCardR = new Rectangle(125, 175, Color.VIOLET);
-                if (AHandColors[i].equals("Indigo")) {
-                    aHandCardR.setFill(Color.INDIGO);
-                }
-                aHandCardPane.getChildren().add(aHandCardR);
-                cardNumberText = new Text("" +  playerAHandNums[i]);
-                cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-                cardNumberText.setFill(Color.WHITE);
-                aHandCardPane.getChildren().add(cardNumberText);
-                aHandCards.getChildren().add(aHandCardPane);
-            }
             
-            board.getChildren().add(new Separator());
-            
-            board.getChildren().add(new Text("Player A's Palette"));
+            this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette, ruleColor);
             
             HBox aPaletteCards = new HBox();
-            board.getChildren().add(aPaletteCards);
-            for (int i = 0; i < playerAPaletteColors.length; i++) {
-                aPalette = new StackPane();
-                aPaletteR = new Rectangle(125, 175, Color.VIOLET);
-                if (playerAPaletteColors[i].equals("Indigo")) {
-                    aPaletteR.setFill(Color.INDIGO);
-                }
-                aPalette.getChildren().add(aPaletteR);
-                cardNumberText = new Text("" + APaletteNums[i]);
-                cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-                cardNumberText.setFill(Color.WHITE);
-                aPalette.getChildren().add(cardNumberText);
-                aPaletteCards.getChildren().add(aPalette);
-            }
-            
-            board.getChildren().add(new Separator());
-            
-            board.getChildren().add(new Text("Canvas"));
-            
-            /*
-            TODO: refactoring out
-            if (canvasColor.equals("Red")) {
-                board.getChildren().add(new Rectangle(175, 125, Color.RED));
-            } else if (canvasColor.equals("Indigo")) {
-                board.getChildren().add(new Rectangle(175, 125, Color.INDIGO));
-            } else  if (canvasColor.equals("Violet")) {
-                board.getChildren().add(new Rectangle(175, 125, Color.VIOLET));
-            }*/
-            board.getChildren().add(new Rectangle(175, 125, ruleColor.getGuiColor()));
-            
-            board.getChildren().add(new Separator());
-            
-            board.getChildren().add(new Text("Player B's Palette"));
-            
             HBox bPaletteCards = new HBox();
-            board.getChildren().add(bPaletteCards);
-            for (int i = 0; i < BPaletteColors.length; i++) {
-                bPalette = new StackPane();
-                bPaletteR = new Rectangle(125, 175, Color.VIOLET);
-                if (BPaletteColors[i].equals("Indigo")) {
-                    bPaletteR.setFill(Color.INDIGO);
-                }
-                bPalette.getChildren().add(bPaletteR);
-                cardNumberText = new Text("" + playerBPaletteNumbers[i]);
-                cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-                cardNumberText.setFill(Color.WHITE);
-                bPalette.getChildren().add(cardNumberText);
-                bPaletteCards.getChildren().add(bPalette);
-            }
-            
-            board.getChildren().add(new Separator());
-            
-            board.getChildren().add(new Text("Player B's Hand"));
-            bHandCards = new HBox();
-            board.getChildren().add(bHandCards);
-            
-            for (int i = 0; i < playerBHandColors.length; i++) {
-                StackPane bHandCardPane = new StackPane();
-                Rectangle bHandCardR = new Rectangle(125, 175, Color.VIOLET);
-                if (playerBHandColors[i].equals("Indigo")) {
-                    bHandCardR.setFill(Color.INDIGO);
-                }
-                bHandCardPane.getChildren().add(bHandCardR);
-                cardNumberText = new Text("" + BHandNums[i]);
-                cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-                cardNumberText.setFill(Color.WHITE);
-                bHandCardPane.getChildren().add(cardNumberText);
-                bHandCards.getChildren().add(bHandCardPane);
-            }
-            
-            
-            primaryStage.setScene(new Scene(board));
-            primaryStage.show();
-            primaryStage.sizeToScene();
             
             firstFirst = true;
             
