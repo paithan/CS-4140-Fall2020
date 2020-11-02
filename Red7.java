@@ -16,6 +16,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.Node;
@@ -31,12 +32,6 @@ public class Red7 extends Application {
     private static final int STARTING_HAND_SIZE = 2;
     
     
-    /**
-     * Main method to run the game.
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
     
     
     //returns an all-false boolean array of length 7
@@ -129,7 +124,23 @@ public class Red7 extends Application {
         stage.setScene(new Scene(board));
         stage.show();
         stage.sizeToScene();
+    }
     
+    //Returns whether the first collection is larger than the second.  (First compare sizes, then highest number, then color of that highest number card.
+    private boolean beats(Collection<Card> fittingA, Collection<Card> fittingB) {
+        if (fittingA.size() == fittingB.size()) {
+            //go to the tiebreakers
+            Card aHighest = Collections.max(fittingA);
+            Card bHighest = Collections.max(fittingB);
+            int comparison = aHighest.compareTo(bHighest);
+            if (comparison == 0) {
+                throw new RuntimeException("We compared two sets of cards that shared the highest card: " + aHighest + ", " + bHighest);
+            }
+            return comparison < 0;
+            
+        } else {
+            return fittingA.size() > fittingB.size();
+        }
     }
     
     
@@ -138,10 +149,6 @@ public class Red7 extends Application {
      * Start the game.
      */
     public void start(Stage primaryStage) {
-    
-    
-        
-        
     
     
         //TODO: remove this in the end
@@ -1812,6 +1819,19 @@ public class Red7 extends Application {
         }
         
         System.out.println("Game over!");
+        
+    }
+    
+    /**
+     * Main method to run the game.
+     */
+    public static void main(String[] args) {
+        this.unitTest();
+        launch(args);
+    }
+    
+    //unit test
+    private void unitTest() {
         
     }
 
