@@ -57,11 +57,16 @@ public class Card implements Comparable<Card> {
     //implements a max comparator
     @Override
     public int compareTo(Card other) {
-        int difference = other.getNumber() - this.getNumber();
+        //int difference = other.getNumber() - this.getNumber();
+        int difference = this.getNumber() - other.getNumber();
+        System.out.println("Comparing " + this + " to " + other + "...");
         if (difference != 0) {
+            System.out.println("difference: " + difference);
             return difference;
         } else {
-            return other.getColor().getValue() - this.getColor().getValue();
+            difference = this.getColor().getValue() - other.getColor().getValue();
+            System.out.println("difference: " + difference);
+            return difference;
         }
     }
     

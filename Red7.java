@@ -50,6 +50,16 @@ public class Red7 extends Application {
         return cardsBox;
     }
     
+    
+    //copies a collection of cards
+    private Collection<Card> copyCards(Collection<Card> original) {
+        Collection<Card> copy = new ArrayList<Card>();
+        for (Card card : original) {
+            copy.add(card);
+        }
+        return copy;
+    }
+    
     //adds an HBox with the cards to the children of the given pane
     private void addCardsHorizontally(Collection<Card> cards, Pane pane) {
         Pane cardsBox = new HBox();
@@ -127,16 +137,20 @@ public class Red7 extends Application {
     }
     
     //Returns whether the first collection is larger than the second.  (First compare sizes, then highest number, then color of that highest number card.
-    private boolean beats(Collection<Card> fittingA, Collection<Card> fittingB) {
+    private static boolean beats(Collection<Card> fittingA, Collection<Card> fittingB) {
+        System.out.println("fittingA: " + fittingA);
+        System.out.println("fittingB: " + fittingB);
         if (fittingA.size() == fittingB.size()) {
             //go to the tiebreakers
             Card aHighest = Collections.max(fittingA);
+            System.out.println("aHighest: " + aHighest);
             Card bHighest = Collections.max(fittingB);
+            System.out.println("bHighest: " + bHighest);
             int comparison = aHighest.compareTo(bHighest);
             if (comparison == 0) {
                 throw new RuntimeException("We compared two sets of cards that shared the highest card: " + aHighest + ", " + bHighest);
             }
-            return comparison < 0;
+            return comparison > 0;
             
         } else {
             return fittingA.size() > fittingB.size();
@@ -1201,9 +1215,25 @@ public class Red7 extends Application {
                         }
                         String colorPick = playerBHandColors[handIndex];
                         int numberPick = BHandNums[handIndex];
+                        Card cardPick = new Card(colorPick, numberPick);
                         boolean playOkay = false;
-//                            if (canvasColor.equals("Red")) {
+                        
+                        
+                        //create a copy of player B's palette with the new card to try to play
+                        Collection<Card> bAttempt = copyCards(playerBPalette);
+                        bAttempt.add(cardPick);
+                        
+                        Collection<Card> fittingA = ruleColor.getFittingCards(playerAPalette);
+                        Collection<Card> fittingB = ruleColor.getFittingCards(bAttempt);
+                        playOkay = beats(fittingB, fittingA);
+                        
+                        
+                        /*
                         if (ruleColor.equals(new CardColor.Red())) {
+                        
+                            
+                            
+                            
                             String bHighestColor = colorPick;
                             int bHighestNumber = numberPick;
                             for (int i = 0; i < BPaletteColors.length; i++) {
@@ -1224,7 +1254,7 @@ public class Red7 extends Application {
                                 playOkay = true;
                             }
                         //} else if (canvasColor.equals("Indigo")) {
-                          } else if (ruleColor.equals(new CardColor.Indigo())) {
+                        } else if (ruleColor.equals(new CardColor.Indigo())) {
                             boolean[] numsB = new boolean[] {false, false, false, false, false, false, false, false};
                             boolean[] numsA = new boolean[] {false, false, false, false, false, false, false, false};
                             String[] colorsA = new String[] {"", "", "", "", "", "", "", ""};
@@ -1303,7 +1333,7 @@ public class Red7 extends Application {
                                 playOkay = true;
                             }
                             
-                        }
+                        }*/
                         
                         
                         if (playOkay) {
@@ -1340,6 +1370,9 @@ public class Red7 extends Application {
                                 playerBHandColors[i] = newBHandColors[i];
                                 BHandNums[i] = newBHandNums[i];
                             }
+                            
+                            playerBPalette.add(cardPick);
+                            //TODO: remove the cardPick from player B's hand.
                             
                             break;
                             
@@ -1715,107 +1748,8 @@ public class Red7 extends Application {
             
             
             
+            this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette, ruleColor);
             
-            
-            board = new VBox();
-            board.setSpacing(2);
-            handText = new Text("Player A's Hand");
-            board.getChildren().add(handText);
-            aHandCards = new HBox();
-            board.getChildren().add(aHandCards);
-            for (int i = 0; i < AHandColors.length; i++) {
-                StackPane aHandCardPane = new StackPane();
-                Rectangle aHandCardR = new Rectangle(125, 175, Color.VIOLET);
-                if (AHandColors[i].equals("Indigo")) {
-                    aHandCardR.setFill(Color.INDIGO);
-                }
-                aHandCardPane.getChildren().add(aHandCardR);
-                cardNumberText = new Text("" +  playerAHandNums[i]);
-                cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-                cardNumberText.setFill(Color.WHITE);
-                aHandCardPane.getChildren().add(cardNumberText);
-                aHandCards.getChildren().add(aHandCardPane);
-            }
-            
-            board.getChildren().add(new Separator());
-            
-            board.getChildren().add(new Text("Player A's Palette"));
-            
-            aPaletteCards = new HBox();
-            board.getChildren().add(aPaletteCards);
-            for (int i = 0; i < playerAPaletteColors.length; i++) {
-                aPalette = new StackPane();
-                aPaletteR = new Rectangle(125, 175, Color.VIOLET);
-                if (playerAPaletteColors[i].equals("Indigo")) {
-                    aPaletteR.setFill(Color.INDIGO);
-                }
-                aPalette.getChildren().add(aPaletteR);
-                cardNumberText = new Text("" + APaletteNums[i]);
-                cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-                cardNumberText.setFill(Color.WHITE);
-                aPalette.getChildren().add(cardNumberText);
-                aPaletteCards.getChildren().add(aPalette);
-            }
-            
-            board.getChildren().add(new Separator());
-            
-            board.getChildren().add(new Text("Canvas"));
-            
-            /*
-            TODO: refactor out
-            if (canvasColor.equals("Red")) {
-                board.getChildren().add(new Rectangle(175, 125, Color.RED));
-            } else if (canvasColor.equals("Indigo")) {
-                board.getChildren().add(new Rectangle(175, 125, Color.INDIGO));
-            } else  if (canvasColor.equals("Violet")) {
-                board.getChildren().add(new Rectangle(175, 125, Color.VIOLET));
-            }*/
-            board.getChildren().add(new Rectangle(175, 125, ruleColor.getGuiColor()));
-            
-            board.getChildren().add(new Separator());
-            
-            board.getChildren().add(new Text("Player B's Palette"));
-            
-            bPaletteCards = new HBox();
-            board.getChildren().add(bPaletteCards);
-            for (int i = 0; i < BPaletteColors.length; i++) {
-                bPalette = new StackPane();
-                bPaletteR = new Rectangle(125, 175, Color.VIOLET);
-                if (BPaletteColors[i].equals("Indigo")) {
-                    bPaletteR.setFill(Color.INDIGO);
-                }
-                bPalette.getChildren().add(bPaletteR);
-                cardNumberText = new Text("" + playerBPaletteNumbers[i]);
-                cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-                cardNumberText.setFill(Color.WHITE);
-                bPalette.getChildren().add(cardNumberText);
-                bPaletteCards.getChildren().add(bPalette);
-            }
-            
-            board.getChildren().add(new Separator());
-            
-            board.getChildren().add(new Text("Player B's Hand"));
-            bHandCards = new HBox();
-            board.getChildren().add(bHandCards);
-            
-            for (int i = 0; i < playerBHandColors.length; i++) {
-                StackPane bHandCardPane = new StackPane();
-                Rectangle bHandCardR = new Rectangle(125, 175, Color.VIOLET);
-                if (playerBHandColors[i].equals("Indigo")) {
-                    bHandCardR.setFill(Color.INDIGO);
-                }
-                bHandCardPane.getChildren().add(bHandCardR);
-                cardNumberText = new Text("" + BHandNums[i]);
-                cardNumberText.setFont(Font.font("System", FontWeight.BOLD, 50.0));
-                cardNumberText.setFill(Color.WHITE);
-                bHandCardPane.getChildren().add(cardNumberText);
-                bHandCards.getChildren().add(bHandCardPane);
-            }
-            
-            
-            primaryStage.setScene(new Scene(board));
-            primaryStage.show();
-            primaryStage.sizeToScene();
         }
         
         System.out.println("Game over!");
@@ -1826,13 +1760,26 @@ public class Red7 extends Application {
      * Main method to run the game.
      */
     public static void main(String[] args) {
-        this.unitTest();
+        unitTest();
         launch(args);
     }
     
     //unit test
-    private void unitTest() {
+    private static void unitTest() {
+        System.out.println("********* Starting Unit Test *************");
         
+        //testing the beats method
+        Collection<Card> fittingA = new ArrayList<Card>();
+        Collection<Card> fittingB = new ArrayList<Card>();
+        fittingA.add(new Card("Red", 7));
+        System.out.println(Red7.beats(fittingA, fittingB) + "   (Should be true.)"); 
+        fittingB.add(new Card("Indigo", 3));
+        System.out.println(Red7.beats(fittingA, fittingB) + "   (Should be true.)"); 
+        fittingB.add(new Card("Violet", 6));
+        System.out.println(Red7.beats(fittingA, fittingB) + "   (Should be false.)"); 
+        fittingA.add(new Card("Violet", 1));
+        System.out.println(Red7.beats(fittingA, fittingB) + "   (Should be true.)"); 
+        System.out.println("********* Unit Test Complete *************");
     }
 
 
