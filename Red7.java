@@ -157,20 +157,24 @@ public class Red7 extends Application {
     private static boolean beats(Collection<Card> fittingA, Collection<Card> fittingB) {
         System.out.println("fittingA: " + fittingA);
         System.out.println("fittingB: " + fittingB);
-        if (fittingA.size() == fittingB.size()) {
-            //go to the tiebreakers
-            Card aHighest = Collections.max(fittingA);
-            System.out.println("aHighest: " + aHighest);
-            Card bHighest = Collections.max(fittingB);
-            System.out.println("bHighest: " + bHighest);
-            int comparison = aHighest.compareTo(bHighest);
-            if (comparison == 0) {
-                throw new RuntimeException("We compared two sets of cards that shared the highest card: " + aHighest + ", " + bHighest);
-            }
-            return comparison > 0;
-            
+        if (fittingA.size() == 0) {
+            return false;
         } else {
-            return fittingA.size() > fittingB.size();
+            if (fittingA.size() == fittingB.size()) {
+                //go to the tiebreakers
+                Card aHighest = Collections.max(fittingA);
+                System.out.println("aHighest: " + aHighest);
+                Card bHighest = Collections.max(fittingB);
+                System.out.println("bHighest: " + bHighest);
+                int comparison = aHighest.compareTo(bHighest);
+                if (comparison == 0) {
+                    throw new RuntimeException("We compared two sets of cards that shared the highest card: " + aHighest + ", " + bHighest);
+                }
+                return comparison > 0;
+                
+            } else {
+                return fittingA.size() > fittingB.size();
+            }
         }
     }
     
@@ -351,200 +355,19 @@ public class Red7 extends Application {
                             boolean playOkay = isWinning(aPaletteAttempt, playerBPalette, ruleColor);
                             
                             
-                            
-                            
                             if (playOkay) {
                                 System.out.println("Made a legal play to the Palette!");
                                 
                                 playerAPalette = aPaletteAttempt;
-                                assert playerAHand.remove(cardPick) : "Didn't remove " + cardPick + " from " + playerAHand + "!";
-                                
+                                boolean removed = playerAHand.remove(cardPick);
+                                assert removed : "Didn't remove " + cardPick + " from " + playerAHand + "!";
                                 
                                 break;
                                 
                             }
                         }
-                        /*
-                        } else if (chosen.charAt(10) == '0') {
-                            String colorPick = AHandColors[0];
-                            int numberPick = playerAHandNums[0];
-                            int handIndex = 0;
-                            
-                            Card cardPick = new Card(colorPick, numberPick);
-                            
-                            Collection<Card> aPaletteAttempt = copyCards(playerAPalette);
-                            aPaletteAttempt.add(cardPick);
-                            boolean playOkay = isWinning(aPaletteAttempt, playerBPalette, ruleColor);
-                            
-                            
-                            
-                            
-                            if (playOkay) {
-                                System.out.println("Made a legal play to the Palette!");
-                                
-                                playerAPalette = aPaletteAttempt;
-                                assert playerAHand.remove(cardPick) : "Didn't remove " + cardPick + " from " + playerAHand + "!";
-                                
-                                
-                                break;
-                                
-                            }
-                        } else if (chosen.charAt(10) == '1') {
-                            String colorPick = AHandColors[1];
-                            int numberPick = playerAHandNums[1];
-                            int handIndex = 1;
-                            boolean playOkay = false;
-//                            if (canvasColor.equals("Red")) {
-                            if (ruleColor.equals(new CardColor.Red())) {
-                                String bHighestColor = BPaletteColors[0];
-                                int bHighestNumber = playerBPaletteNumbers[0];
-                                for (int i = 1; i < BPaletteColors.length; i++) {
-                                    if (playerBPaletteNumbers[i] > bHighestNumber || (playerBPaletteNumbers[i] == bHighestNumber && BPaletteColors[i].equals("Indigo"))) {
-                                        bHighestColor = BPaletteColors[i];
-                                        bHighestNumber = playerBPaletteNumbers[i];
-                                    }
-                                }
-                                String aHighestColor = colorPick;
-                                int aHighestNumber = numberPick;
-                                for (int i = 0; i < playerAPaletteColors.length; i++) {
-                                    if (APaletteNums[i] > aHighestNumber || (APaletteNums[i] == aHighestNumber && playerAPaletteColors[i].equals("Indigo"))) {
-                                        aHighestNumber = APaletteNums[i];
-                                        aHighestColor = playerAPaletteColors[i];
-                                    }
-                                }
-                                if (aHighestNumber > bHighestNumber || (aHighestNumber == bHighestNumber && aHighestColor.equals("Indigo"))) {
-                                    playOkay = true;
-                                }
-//                            } else if (canvasColor.equals("Indigo")) {
-                            } else if (ruleColor.equals(new CardColor.Indigo())) {
-                                boolean[] numsB = new boolean[] {false, false, false, false, false, false, false, false};
-                                boolean[] numsA = new boolean[] {false, false, false, false, false, false, false, false};
-                                String[] colorsA = new String[] {"", "", "", "", "", "", "", ""};
-                                int bMaxStreak = 0;
-                                int bStreakTop = 0;
-                                int currentStreak = 0;
-                                int aMaxStreak = 0;
-                                int aStreakTop = 0;
-                                String aStreakTopColor = "";
-                                for (int i = 0; i < playerBPaletteNumbers.length; i++) {
-                                    numsB[playerBPaletteNumbers[i]] = true;
-                                }
-                                for (int i = 1; i < numsB.length; i++) {
-                                    if (numsB[i]) {
-                                        currentStreak += 1;
-                                        if (currentStreak >=bMaxStreak) {
-                                            bMaxStreak = currentStreak;
-                                            bStreakTop = i;
-                                        }
-                                    } else {
-                                        currentStreak = 0;
-                                    }
-                                }
-                                for (int i = 0; i < APaletteNums.length; i++) {
-                                    numsA[APaletteNums[i]] = true;
-                                    if (colorsA[APaletteNums[i]].equals("") || playerAPaletteColors[i].equals("Indigo")) {
-                                        colorsA[i] = playerAPaletteColors[i];
-                                    }
-                                }
-                                numsA[numberPick] = true;
-                                if (colorsA[numberPick].equals("") || colorPick.equals("Indigo")) {
-                                    colorsA[numberPick] = colorPick;
-                                }
-                                for (int i = 1; i < numsA.length; i++) {
-                                    if (numsA[i]) {
-                                        currentStreak += 1;
-                                        if (currentStreak >=aMaxStreak) {
-                                            aMaxStreak = currentStreak;
-                                            aStreakTop = i;
-                                        }
-                                    } else {
-                                        currentStreak = 0;
-                                    }
-                                }
-                                aStreakTopColor = colorsA[aStreakTop];
-                                if (aMaxStreak > bMaxStreak || (aMaxStreak == bMaxStreak && aStreakTop > bStreakTop) || (aMaxStreak == bMaxStreak && aStreakTop == bStreakTop && aStreakTopColor.equals("Indigo"))) {
-                                    playOkay = true;
-                                }
-                                
-//                            } else if (canvasColor.equals("Violet")) {
-                            } else if (ruleColor.equals(new CardColor.Violet())) {
-                                int numBSmall = 0;
-                                int highSmallB = 0;
-                                for (int i = 0; i < BPaletteColors.length; i++) {
-                                    if (playerBPaletteNumbers[i] < 4) {
-                                        numBSmall ++;
-                                        if (playerBPaletteNumbers[i] > highSmallB) {
-                                            highSmallB = playerBPaletteNumbers[i];
-                                        }
-                                    }
-                                }
-                                int numASmall = 0;
-                                int highSmallA = 0;
-                                String highSmallAColor = "";
-                                for (int i = 0; i < playerAPaletteColors.length; i++) {
-                                    if (APaletteNums[i] < 4) {
-                                        numASmall ++;
-                                        if (APaletteNums[i] > highSmallA) {
-                                            highSmallA = APaletteNums[i];
-                                            highSmallAColor = playerAPaletteColors[i];
-                                        }
-                                    }
-                                }
-                                if (numberPick < 4) {
-                                    numASmall ++;
-                                    if (numberPick > highSmallA) {
-                                        highSmallA = numberPick;
-                                        highSmallAColor = colorPick;
-                                    }
-                                }
-                                if (numASmall > numBSmall || (numASmall == numBSmall && highSmallA > highSmallB) || (numASmall == numBSmall && highSmallA == highSmallB && highSmallAColor.equals("Indigo"))) {
-                                    playOkay = true;
-                                }
-                            }
-                            
-                            
-                            if (playOkay) {
-                                System.out.println("Made a legal play to the Palette!");
-                                
-                                String[] newAPaletteColors = new String[playerAPaletteColors.length + 1];
-                                int[] newAPaletteNums = new int[APaletteNums.length + 1];
-                                for (int i = 0; i < playerAPaletteColors.length; i++) {
-                                    newAPaletteColors[i] = playerAPaletteColors[i];
-                                    newAPaletteNums[i] = APaletteNums[i];
-                                }
-                                newAPaletteColors[newAPaletteColors.length-1] = colorPick;
-                                newAPaletteNums[newAPaletteNums.length - 1] = numberPick;
-                                APaletteNums = new int[newAPaletteNums.length];
-                                playerAPaletteColors = new String[newAPaletteColors.length];
-                                for (int i = 0; i < playerAPaletteColors.length; i++) {
-                                    APaletteNums[i] = newAPaletteNums[i];
-                                    playerAPaletteColors[i] = newAPaletteColors[i];
-                                }  
-                                
-                                String[] newAHandColors = new String[playerAHandNums.length - 1];
-                                int[] newAHandNums = new int[playerAHandNums.length - 1];
-                                int j = 0;
-                                for (int i = 0; i < playerAHandNums.length; i ++) {
-                                    if (i != handIndex) {
-                                        newAHandColors[j] = AHandColors[i];
-                                        newAHandNums[j] = playerAHandNums[i];
-                                        j++;
-                                    }
-                                }
-                                AHandColors = new String[newAHandColors.length];
-                                playerAHandNums = new int[newAHandNums.length];
-                                for (int i = 0; i < AHandColors.length; i++) {
-                                    AHandColors[i] = newAHandColors[i];
-                                    playerAHandNums[i] = newAHandNums[i];
-                                }
-                                
-                                break;
-                            }
-                        }*/
                         
                         System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
-                        
-                        
                         
                     } else if (chosen.equals("Play only to Canvas")) {
                         ArrayList<String> handChoices = new ArrayList<String>();
@@ -564,7 +387,25 @@ public class Red7 extends Application {
                         if (chosen.equals("Go back")) {
                             System.out.println("Backing up...");
                             continue;
-                        } else if (chosen.charAt(10) == '0') {
+                        } else {
+                            int handIndex = Character.getNumericValue(chosen.charAt(10));
+                            Card canvasPick = playerAHand.get(handIndex);
+                            CardColor ruleAttempt = canvasPick.getColor();
+                            boolean playOkay = isWinning(playerAPalette, playerBPalette, ruleAttempt);
+                            
+                            if (playOkay) {
+                                System.out.println("Made a legal play to the Canvas!");
+                                
+                                //playerAPalette = aPaletteAttempt;
+                                ruleColor = ruleAttempt;
+                                boolean removed = playerAHand.remove(canvasPick);
+                                assert removed : "Didn't remove " + canvasPick + " from " + playerAHand + "!";
+                                
+                                break;
+                                
+                            }
+                            
+                            /*
                             String colorPick = AHandColors[0];
                             int numberPick = playerAHandNums[0];
                             int handIndex = 0;
@@ -685,7 +526,7 @@ public class Red7 extends Application {
                                 for (int i = 0; i < playerAPaletteColors.length; i++) {
                                     APaletteNums[i] = newAPaletteNums[i];
                                     playerAPaletteColors[i] = newAPaletteColors[i];
-                                } */ 
+                                } 
                                 
                                 String[] newAHandColors = new String[playerAHandNums.length - 1];
                                 int[] newAHandNums = new int[playerAHandNums.length - 1];
@@ -707,6 +548,7 @@ public class Red7 extends Application {
                                 break;
                                 
                             }
+                            
                         } else if (chosen.charAt(10) == '1') {
                             String colorPick = AHandColors[1];
                             int numberPick = playerAHandNums[1];
@@ -838,7 +680,7 @@ public class Red7 extends Application {
                                 for (int i = 0; i < playerAPaletteColors.length; i++) {
                                     APaletteNums[i] = newAPaletteNums[i];
                                     playerAPaletteColors[i] = newAPaletteColors[i];
-                                }  */
+                                }  
                                 
                                 String[] newAHandColors = new String[playerAHandNums.length - 1];
                                 int[] newAHandNums = new int[playerAHandNums.length - 1];
@@ -858,7 +700,7 @@ public class Red7 extends Application {
                                 }
                                 
                                 break;
-                            }
+                            }*/
                         }
                         
                         System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
@@ -891,6 +733,10 @@ public class Red7 extends Application {
                             } catch (Exception e) {
                                 System.err.println("Ooops!  Couldn't get a character!");
                             }
+                            
+                            
+                            Card toPaletteCard = playerAHand.get(hand2PaletteIndex);
+                            
                             String colorPick = AHandColors[hand2PaletteIndex];
                             int numberPick = playerAHandNums[hand2PaletteIndex];
                             handChoices.clear();
@@ -919,6 +765,33 @@ public class Red7 extends Application {
                                 } catch (Exception e) {
                                     System.err.println("Couldn't get a character when looking for the canvas card!");
                                 }
+                                
+                                //remove the rule card
+                                Card ruleCard = playerAHand.get(hand2CanvasIndex);
+                                CardColor ruleAttempt = ruleCard.getColor();
+                                
+                                //try out the new cards to see if we're winning
+                                Collection<Card> aPaletteAttempt = copyCards(playerAPalette);
+                                aPaletteAttempt.add(toPaletteCard);
+                                playOkay = isWinning(aPaletteAttempt, playerBPalette, ruleAttempt);
+                                
+                                
+                                if (playOkay) {
+                                    System.out.println("Made a legal play to the Palette and Canvas!");
+                                    
+                                    playerAPalette = aPaletteAttempt;
+                                    boolean removed = playerAHand.remove(toPaletteCard);
+                                    assert removed : "Didn't remove " + toPaletteCard + " from " + playerAHand + "!";
+                                    
+                                    ruleColor = ruleAttempt;
+                                    removed = playerAHand.remove(ruleCard);
+                                    assert removed : "Didn't remove " + ruleCard + " from " + playerAHand + "!";
+                                    
+                                    break;
+                                    
+                                }
+                                
+                                /*
                                 String canvasColorPick = AHandColors[hand2CanvasIndex];
                                 
                                 if (canvasColorPick.equals("Red")) {
@@ -1050,7 +923,7 @@ public class Red7 extends Application {
                                     
                                     break;
                                     
-                                }
+                                }*/
                             }
                         }
                         
@@ -1125,6 +998,8 @@ public class Red7 extends Application {
                         }
                         String colorPick = playerBHandColors[handIndex];
                         int numberPick = BHandNums[handIndex];
+                        
+                        
                         Card cardPick = new Card(colorPick, numberPick);
                         boolean playOkay = false;
                         
@@ -1137,6 +1012,19 @@ public class Red7 extends Application {
                         Collection<Card> fittingB = ruleColor.getFittingCards(bAttempt);
                         playOkay = beats(fittingB, fittingA);
                         
+                        
+                        
+                        if (playOkay) {
+                            System.out.println("Made a legal play to the Palette!");
+                            
+                            //playerAPalette = aPaletteAttempt;
+                            playerBPalette = bAttempt;
+                            boolean removed = playerBHand.remove(cardPick);
+                            assert removed : "Didn't remove " + cardPick + " from " + playerBHand + "!";
+                            
+                            break;
+                            
+                        }
                         
                         /*
                         if (ruleColor.equals(new CardColor.Red())) {
@@ -1245,7 +1133,7 @@ public class Red7 extends Application {
                             
                         }*/
                         
-                        
+                        /*
                         if (playOkay) {
                             System.out.println("Made a legal play to the Palette!");
                             
@@ -1288,7 +1176,7 @@ public class Red7 extends Application {
                             
                             break;
                             
-                        }
+                        }*/
                     } 
                     
                     System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
@@ -1320,6 +1208,27 @@ public class Red7 extends Application {
                         } catch (Exception e) {
                             System.out.println("Couldn't parse the int.");
                         }
+                        
+                        //int handIndex = Character.getNumericValue(chosen.charAt(10));
+                        Card canvasPick = playerBHand.get(handIndex);
+                        CardColor ruleAttempt = canvasPick.getColor();
+                        boolean playOkay = isWinning(playerBPalette, playerAPalette, ruleAttempt);
+                        
+                        if (playOkay) {
+                            System.out.println("Made a legal play to the Canvas!");
+                            
+                            //playerAPalette = aPaletteAttempt;
+                            ruleColor = ruleAttempt;
+                            boolean removed = playerBHand.remove(canvasPick);
+                            assert removed : "Didn't remove " + canvasPick + " from " + playerBHand + "!";
+                            
+                            break;
+                            
+                        }
+                        
+                        /*
+                        
+                        
                         String colorPick = playerBHandColors[handIndex];
                         int numberPick = BHandNums[handIndex];
                         boolean playOkay = false;
@@ -1439,7 +1348,7 @@ public class Red7 extends Application {
                             for (int i = 0; i < playerAPaletteColors.length; i++) {
                                 APaletteNums[i] = newAPaletteNums[i];
                                 playerAPaletteColors[i] = newAPaletteColors[i];
-                            } */ 
+                            } 
                             
                             String[] newBHandColors = new String[BHandNums.length - 1];
                             int[] newBHandNums = new int[BHandNums.length - 1];
@@ -1460,7 +1369,7 @@ public class Red7 extends Application {
                             
                             break;
                             
-                        }
+                        }*/
                     }
                     
                     System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
