@@ -178,6 +178,20 @@ public class Red7 extends Application {
         }
     }
     
+    //adds the play options to a menu
+    private ArrayList<String> getHandChoices(Collection<Card> hand, String target) {
+        ArrayList<String> choices = new ArrayList<String>();
+        choices.add("Go back");
+        
+        int i = 0;
+        for (Card card : hand) {
+            choices.add("Play card " + i + ": " + card + " to " + target);
+            i++;
+        }
+        
+        return choices;
+    }
+    
     
 
     /**
@@ -330,11 +344,7 @@ public class Red7 extends Application {
                         System.out.println("Player A Loses!");
                         break stillPlaying;
                     } else if (chosen.equals("Play only to Palette")) {
-                        ArrayList<String> handChoices = new ArrayList<String>();
-                        handChoices.add("Go back");
-                        for (int i = 0; i < playerAHandNums.length; i++) {
-                            handChoices.add("Play card " + i + ": " + AHandColors[i] + " " + playerAHandNums[i] + " to palette");
-                        }
+                        ArrayList<String> handChoices = this.getHandChoices(playerAHand, "palette");
                         
                         dialog = new ChoiceDialog<String>("Go back", handChoices);
                         dialog.setHeaderText("Which card will you move to the Palette?");
@@ -370,11 +380,14 @@ public class Red7 extends Application {
                         System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
                         
                     } else if (chosen.equals("Play only to Canvas")) {
-                        ArrayList<String> handChoices = new ArrayList<String>();
+                        ArrayList<String> handChoices = this.getHandChoices(playerAHand, "canvas");
+                        
+                        /*
+                        new ArrayList<String>();
                         handChoices.add("Go back");
                         for (int i = 0; i < playerAHandNums.length; i++) {
                             handChoices.add("Play card " + i + ": " + AHandColors[i] + " " + playerAHandNums[i] + " to canvas");
-                        }
+                        }*/
                         
                         dialog = new ChoiceDialog<String>("Go back", handChoices);
                         dialog.setHeaderText("Which card will you move to the Canvas?");
@@ -708,11 +721,14 @@ public class Red7 extends Application {
                         
                         
                     } else if (chosen.equals("Play to Palette and Canvas")) {
-                        ArrayList<String> handChoices = new ArrayList<String>();
+                        ArrayList<String> handChoices = getHandChoices(playerAHand, "palette");
+                        
+                        /*
+                        new ArrayList<String>();
                         handChoices.add("Go back");
                         for (int i = 0; i < playerAHandNums.length; i++) {
                             handChoices.add("Play card " + i + ": " + AHandColors[i] + " " + playerAHandNums[i] + " to palette first...");
-                        }
+                        }*/
                         
                         dialog = new ChoiceDialog<String>("Go back", handChoices);
                         dialog.setHeaderText("First choose for the Palette.");
@@ -739,13 +755,19 @@ public class Red7 extends Application {
                             
                             String colorPick = AHandColors[hand2PaletteIndex];
                             int numberPick = playerAHandNums[hand2PaletteIndex];
+                            
+                            Collection<Card> possibleHand = this.copyCards(playerAHand);
+                            possibleHand.remove(toPaletteCard);
+                            
+                            handChoices = this.getHandChoices(possibleHand, "canvas");
+                            /*
                             handChoices.clear();
                             handChoices.add("Go back");
                             for (int i = 0; i < playerAHandNums.length; i++) {
                                 if (i != hand2PaletteIndex) {
                                     handChoices.add("Play card " + i + ": " + AHandColors[i] + " " + playerAHandNums[i] + " to the canvas second.");
                                 }
-                            }
+                            }*/
                         
                             dialog = new ChoiceDialog<String>("Go back", handChoices);
                             dialog.setHeaderText("Next, choose for the canvas.");
