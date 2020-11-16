@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.Node;
@@ -30,6 +31,11 @@ public class Red7 extends Application {
     
     //starting hand size
     private static final int STARTING_HAND_SIZE = 2;
+    
+    
+    //the current rule color
+    private CardColor ruleColor;  //TODO: save for later
+    
     
     
     
@@ -52,8 +58,8 @@ public class Red7 extends Application {
     
     
     //copies a collection of cards
-    private Collection<Card> copyCards(Collection<Card> original) {
-        Collection<Card> copy = new ArrayList<Card>();
+    private List<Card> copyCards(Collection<Card> original) {
+        List<Card> copy = new ArrayList<Card>();
         for (Card card : original) {
             copy.add(card);
         }
@@ -86,9 +92,42 @@ public class Red7 extends Application {
         return wins;
     }
     
+    //Makes a play only to the palette
+    private boolean playOnlyToPalette(List<Card> playerHand, Collection<Card> playerPalette, Collection<Card> opponentPalette) {
+        ArrayList<String> handChoices = this.getHandChoices(playerHand, "palette");
+        ArrayList<String> choiceChosen = new ArrayList<String>();
+        
+        ChoiceDialog<String> dialog = new ChoiceDialog<String>("Go back", handChoices);
+        dialog.setHeaderText("Which card will you move to the Palette?");
+        dialog.setContentText("Options:");
+        dialog.showAndWait().ifPresent( (response) -> {
+            choiceChosen.add(response);
+            System.out.println("response: " + response);
+        });
+        String chosen = choiceChosen.get(0);
+        if (chosen.equals("Go back")) {
+            System.out.println("Backing up...");
+            return false;
+        } else {
+            int handIndex = Character.getNumericValue(chosen.charAt(10));
+            Card cardPick = playerHand.get(handIndex);
+            Collection<Card> paletteAttempt = copyCards(playerPalette);
+            paletteAttempt.add(cardPick);
+            
+            boolean playOkay = isWinning(paletteAttempt, opponentPalette, this.ruleColor);
+            
+            if (playOkay) {
+                playerHand.remove(cardPick);
+                playerPalette.add(cardPick);
+            }
+            
+            return playOkay;
+        }
+    }
+    
     
     //draws the board on the stage
-    private void drawBoard(Stage stage, Collection<Card> playerAHand, Collection<Card> playerBHand, Collection<Card> playerAPalette, Collection<Card> playerBPalette, CardColor ruleColor) {
+    private void drawBoard(Stage stage, Collection<Card> playerAHand, Collection<Card> playerBHand, Collection<Card> playerAPalette, Collection<Card> playerBPalette) {
         
         //Creates overall GUI
         VBox board = new VBox();
@@ -228,7 +267,7 @@ public class Red7 extends Application {
         String[] playerAPaletteColors = new String[1];
         
         String canvasColor = "Red";
-        CardColor ruleColor = new CardColor.Red();
+        this.ruleColor = new CardColor.Red();
         
         Random randGen = new Random();
         
@@ -305,7 +344,7 @@ public class Red7 extends Application {
         HBox bHandCards; 
         
         
-        this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette, ruleColor);
+        this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette);
         
         
         boolean firstFirst = APaletteNums[0] < playerBPaletteNumbers[0] || (APaletteNums[0] == playerBPaletteNumbers[0] && playerAPaletteColors[0].equals("Violet"));
@@ -344,6 +383,14 @@ public class Red7 extends Application {
                         System.out.println("Player A Loses!");
                         break stillPlaying;
                     } else if (chosen.equals("Play only to Palette")) {
+                        
+                        boolean playOkay = this.playOnlyToPalette(playerAHand, playerAPalette, playerBPalette);
+                        
+                        if (!playOkay) break;
+                        
+                        System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
+                        
+                        /*
                         ArrayList<String> handChoices = this.getHandChoices(playerAHand, "palette");
                         
                         dialog = new ChoiceDialog<String>("Go back", handChoices);
@@ -375,9 +422,7 @@ public class Red7 extends Application {
                                 break;
                                 
                             }
-                        }
-                        
-                        System.out.println("That move did not help you to win.  Let's try that again...  (ruleColor: " + ruleColor + ")");
+                        }*/
                         
                     } else if (chosen.equals("Play only to Canvas")) {
                         ArrayList<String> handChoices = this.getHandChoices(playerAHand, "canvas");
@@ -756,7 +801,7 @@ public class Red7 extends Application {
                             String colorPick = AHandColors[hand2PaletteIndex];
                             int numberPick = playerAHandNums[hand2PaletteIndex];
                             
-                            Collection<Card> possibleHand = this.copyCards(playerAHand);
+                            List<Card> possibleHand = this.copyCards(playerAHand);
                             possibleHand.remove(toPaletteCard);
                             
                             handChoices = this.getHandChoices(possibleHand, "canvas");
@@ -789,12 +834,16 @@ public class Red7 extends Application {
                                 }
                                 
                                 //remove the rule card
-                                Card ruleCard = playerAHand.get(hand2CanvasIndex);
+                                Card ruleCard = possibleHand.get(hand2CanvasIndex);
                                 CardColor ruleAttempt = ruleCard.getColor();
                                 
                                 //try out the new cards to see if we're winning
+                                
+                                
                                 Collection<Card> aPaletteAttempt = copyCards(playerAPalette);
                                 aPaletteAttempt.add(toPaletteCard);
+                                
+                                
                                 playOkay = isWinning(aPaletteAttempt, playerBPalette, ruleAttempt);
                                 
                                 
@@ -956,7 +1005,7 @@ public class Red7 extends Application {
             }
             
             
-            this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette, ruleColor);
+            this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette);
             
             HBox aPaletteCards = new HBox();
             HBox bPaletteCards = new HBox();
@@ -994,11 +1043,14 @@ public class Red7 extends Application {
                     System.out.println("Player B Loses!");
                     break stillPlaying;
                 } else if (chosen.equals("Play only to Palette")) {
+                    ArrayList<String> handChoices = getHandChoices(playerBHand, "palette");
+                    
+                    /*
                     ArrayList<String> handChoices = new ArrayList<String>();
                     handChoices.add("Go back");
                     for (int i = 0; i < BHandNums.length; i++) {
                         handChoices.add("Play card " + i + ": " + playerBHandColors[i] + " " + BHandNums[i] + " to palette");
-                    }
+                    }*/
                     
                     dialog = new ChoiceDialog<String>("Go back", handChoices);
                     dialog.setHeaderText("Which card will you move to the Palette?");
@@ -1018,21 +1070,29 @@ public class Red7 extends Application {
                         } catch (Exception e) {
                             System.err.println("Couldn't parse the integer for player B choosing a hand card!");
                         }
+                        
+                        Card cardPick = playerBHand.get(handIndex);
+                        
+                        /*
                         String colorPick = playerBHandColors[handIndex];
                         int numberPick = BHandNums[handIndex];
                         
                         
-                        Card cardPick = new Card(colorPick, numberPick);
-                        boolean playOkay = false;
+                        Card cardPick = new Card(colorPick, numberPick);*/
+                        //boolean playOkay = false;
                         
                         
                         //create a copy of player B's palette with the new card to try to play
                         Collection<Card> bAttempt = copyCards(playerBPalette);
                         bAttempt.add(cardPick);
                         
+                        
+                        boolean playOkay = isWinning(bAttempt, playerAPalette, ruleColor);
+                        
+                        /*
                         Collection<Card> fittingA = ruleColor.getFittingCards(playerAPalette);
                         Collection<Card> fittingB = ruleColor.getFittingCards(bAttempt);
-                        playOkay = beats(fittingB, fittingA);
+                        playOkay = beats(fittingB, fittingA);*/
                         
                         
                         
@@ -1206,11 +1266,14 @@ public class Red7 extends Application {
                     
                     
                 } else if (chosen.equals("Play only to Canvas")) {
+                    ArrayList<String> handChoices = getHandChoices(playerBHand, "canvas");
+                    
+                    /*
                     ArrayList<String> handChoices = new ArrayList<String>();
                     handChoices.add("Go back");
                     for (int i = 0; i < BHandNums.length; i++) {
                         handChoices.add("Play card " + i + ": " + playerBHandColors[i] + " " + BHandNums[i] + " to canvas");
-                    }
+                    }*/
                     
                     dialog = new ChoiceDialog<String>("Go back", handChoices);
                     dialog.setHeaderText("Which card will you move to the Canvas?");
@@ -1399,11 +1462,97 @@ public class Red7 extends Application {
                     
                     
                 } else if (chosen.equals("Play to Palette and Canvas")) {
+                    ArrayList<String> handChoices = getHandChoices(playerBHand, "palette");
+                    /*
                     ArrayList<String> handChoices = new ArrayList<String>();
                     handChoices.add("Go back");
                     for (int i = 0; i < BHandNums.length; i++) {
                         handChoices.add("Play card " + i + ": " + playerBHandColors[i] + " " + BHandNums[i] + " to palette first...");
+                    }*/
+                        
+                    dialog = new ChoiceDialog<String>("Go back", handChoices);
+                    dialog.setHeaderText("First choose for the Palette.");
+                    dialog.setContentText("Options:");
+                    dialog.showAndWait().ifPresent( (response) -> {
+                        choiceChosen.add(response);
+                        System.out.println("response: " + response);
+                    });
+                    chosen = choiceChosen.get(1);
+                    if (chosen.equals("Go back")) {
+                        System.out.println("Backing up...");
+                        continue;
+                    } else {
+                        boolean playOkay = false;
+                        int hand2PaletteIndex = 0;
+                        try {
+                            hand2PaletteIndex = Integer.parseInt(chosen.charAt(10) + "");
+                        } catch (Exception e) {
+                            System.err.println("Ooops!  Couldn't get a character!");
+                        }
+                        
+                        
+                        Card toPaletteCard = playerBHand.get(hand2PaletteIndex);
+                        
+                        List<Card> possibleHand = this.copyCards(playerBHand);
+                        possibleHand.remove(toPaletteCard);
+                        
+                        handChoices = this.getHandChoices(possibleHand, "canvas");
+                        /*
+                        handChoices.clear();
+                        handChoices.add("Go back");
+                        for (int i = 0; i < playerAHandNums.length; i++) {
+                            if (i != hand2PaletteIndex) {
+                                handChoices.add("Play card " + i + ": " + AHandColors[i] + " " + playerAHandNums[i] + " to the canvas second.");
+                            }
+                        }*/
+                    
+                        dialog = new ChoiceDialog<String>("Go back", handChoices);
+                        dialog.setHeaderText("Next, choose for the canvas.");
+                        dialog.setContentText("Options:");
+                        dialog.showAndWait().ifPresent( (response) -> {
+                            choiceChosen.add(response);
+                            System.out.println("response: " + response);
+                        });
+                        chosen = choiceChosen.get(2);
+                        if (chosen.equals("Go back")) {
+                            System.out.println("Backing up...");
+                            continue;
+                        } else {
+                            int hand2CanvasIndex = 0;
+                            try {
+                                hand2CanvasIndex = Integer.parseInt(chosen.charAt(10) + "");
+                            } catch (Exception e) {
+                                System.err.println("Couldn't get a character when looking for the canvas card!");
+                            }
+                            
+                            //remove the rule card
+                            Card ruleCard = possibleHand.get(hand2CanvasIndex);
+                            CardColor ruleAttempt = ruleCard.getColor();
+                            
+                            //try out the new cards to see if we're winning
+                            Collection<Card> bPaletteAttempt = copyCards(playerBPalette);
+                            bPaletteAttempt.add(toPaletteCard);
+                            playOkay = isWinning(bPaletteAttempt, playerAPalette, ruleAttempt);
+                            
+                            
+                            if (playOkay) {
+                                System.out.println("Made a legal play to the Palette and Canvas!");
+                                
+                                playerBPalette = bPaletteAttempt;
+                                boolean removed = playerBHand.remove(toPaletteCard);
+                                assert removed : "Didn't remove " + toPaletteCard + " from " + playerBHand + "!";
+                                
+                                ruleColor = ruleAttempt;
+                                removed = playerBHand.remove(ruleCard);
+                                assert removed : "Didn't remove " + ruleCard + " from " + playerBHand + "!";
+                                
+                                break;
+                                
+                            }
+                        }
                     }
+                            
+                            /*
                     
                     dialog = new ChoiceDialog<String>("Go back", handChoices);
                     dialog.setHeaderText("First choose for the Palette.");
@@ -1583,7 +1732,7 @@ public class Red7 extends Application {
                                 
                             }
                         }
-                    }
+                    }*/
                     
                     System.out.println("That move did not help you to win.  Let's try that again...  (canvasColor: " + canvasColor + ")");
                 }
@@ -1591,7 +1740,7 @@ public class Red7 extends Application {
             
             
             
-            this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette, ruleColor);
+            this.drawBoard(primaryStage, playerAHand, playerBHand, playerAPalette, playerBPalette);
             
         }
         
